@@ -38,8 +38,9 @@ GameObject:
   - component: {fileID: 136180440724004416}
   - component: {fileID: 23024251076623972}
   - component: {fileID: 114215548098050330}
-  - component: {fileID: 114296424052002738}
   - component: {fileID: 114022769786958818}
+  - component: {fileID: 114296424052002738}
+  - component: {fileID: 114945902760082116}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -251,9 +252,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca659d8acaf5e5b468f28886a3fa94a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ProjectilePrefab: {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9,
-    type: 2}
+  BulletPrefab: {fileID: 0}
   ProjectileSpawn: {fileID: 4070897653918090}
+--- !u!114 &114945902760082116
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1638485881401946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85ae0293a0a69a348b11a2f279b73a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentHealth: 100
 --- !u!136 &136180440724004416
 CapsuleCollider:
   m_ObjectHideFlags: 1

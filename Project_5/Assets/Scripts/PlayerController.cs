@@ -4,7 +4,9 @@ using UnityEngine.Networking;
 
 public class PlayerController : NetworkBehaviour
 {
-    public GameObject ProjectilePrefab;
+    // TODO: add ability to handle multiple weapons
+
+    public GameObject BulletPrefab;
     public Transform ProjectileSpawn;
 
     void Update()
@@ -47,12 +49,13 @@ public class PlayerController : NetworkBehaviour
     {
         // create an instane of the projectile we want to fire
         GameObject projectile = Instantiate(
-            ProjectilePrefab,
+            BulletPrefab,
             ProjectileSpawn.position,
             ProjectileSpawn.rotation);
 
-        // give the projectile some velocity
-        projectile.GetComponent<Rigidbody>().velocity = projectile.transform.forward * 7;
+        // TODO: Would be better if projectile did itself when instantiated
+        // give the projectile some velocity; 
+        projectile.GetComponent<Bullet>().SetVelocity(projectile.transform.forward);
 
         // spawn the projectile on al of the connected Clients
         NetworkServer.Spawn(projectile);
@@ -61,6 +64,9 @@ public class PlayerController : NetworkBehaviour
         Destroy(projectile, 2.0f);
     }
 
+    /// <summary>
+    /// display the player of the current user as Blue
+    /// </summary>
     public override void OnStartLocalPlayer()
     {
         GetComponent<MeshRenderer>().material.color = Color.blue;
