@@ -23,6 +23,9 @@ GameObject:
   - component: {fileID: 135478927632801340}
   - component: {fileID: 23740246811462884}
   - component: {fileID: 54872656793587536}
+  - component: {fileID: 114574668821353282}
+  - component: {fileID: 114152345148802764}
+  - component: {fileID: 114311890222537176}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -99,6 +102,70 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114152345148802764
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1166728584594810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &114311890222537176
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1166728584594810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5caaf6b07ab04d4d8821c9b2e46f317, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114574668821353282
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1166728584594810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 16
+    i1: 134
+    i2: 187
+    i3: 197
+    i4: 223
+    i5: 26
+    i6: 155
+    i7: 4
+    i8: 250
+    i9: 209
+    i10: 52
+    i11: 4
+    i12: 66
+    i13: 26
+    i14: 23
+    i15: 217
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!135 &135478927632801340
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -15,7 +15,7 @@ public class PlayerController : NetworkBehaviour
         UpdateMovement();
 
         if (Input.GetKeyDown(KeyCode.Space))
-            Fire();
+            CmdFire();
     }
 
     private void UpdateMovement()
@@ -41,7 +41,9 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    void Fire()
+    // [Command] code is called on the Client but ran on the Server
+    [Command]
+    void CmdFire()
     {
         // create an instane of the projectile we want to fire
         GameObject projectile = Instantiate(
@@ -51,6 +53,9 @@ public class PlayerController : NetworkBehaviour
 
         // give the projectile some velocity
         projectile.GetComponent<Rigidbody>().velocity = projectile.transform.forward * 7;
+
+        // spawn the projectile on al of the connected Clients
+        NetworkServer.Spawn(projectile);
 
         // destroy it after some arbitrary amount of time; 2 seconds seems good enough
         Destroy(projectile, 2.0f);
