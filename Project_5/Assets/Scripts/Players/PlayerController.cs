@@ -47,6 +47,8 @@ public class PlayerController : BasicObjectController
     [Command]
     void CmdFire()
     {
+        this.GetComponent<Health>().TakeDamage(10);
+
         // create an instane of the projectile we want to fire
         GameObject projectile = Instantiate(
             BulletPrefab,
@@ -71,6 +73,34 @@ public class PlayerController : BasicObjectController
     /// </summary>
     public override void OnStartLocalPlayer()
     {
-        GetComponent<MeshRenderer>().material.color = Color.blue;
+        this.GetComponent<MeshRenderer>().material.color = Color.blue;
+    }
+
+    /// <summary>
+    /// player ran into something, see if it is an object it can pick up
+    /// </summary>
+    /// <remarks>
+    /// NOTE: If enemies can pick up objects, move this method to base class
+    /// </remarks>
+    void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.name == "HealthObject")
+        {
+            AddHealthToPlayer(collision.gameObject.GetComponent<HealthOrb>().Health);
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void AddHealthToPlayer(uint healthAmount)
+    {
+        this.GetComponent<Health>().TakeHeal(healthAmount);
+    }
+
+    /// <summary>
+    /// respawn player (in set time and place)
+    /// </summary>
+    public override void Respawn()
+    {
+        
     }
 }

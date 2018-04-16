@@ -11,12 +11,12 @@ public class Health : MonoBehaviour
     private RectTransform HealthBar;
 
     // do not show in IDE 
-    public uint CurrentHealth { get; set; }
+    public int CurrentHealth { get; set; }
 
 
     public Health()
     {
-        CurrentHealth = MaxHealth;
+        CurrentHealth = (int)MaxHealth;
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ public class Health : MonoBehaviour
         if (amount == 0)
             return;
 
-        CurrentHealth -= amount;
+        CurrentHealth -= (int)amount;
         if (CurrentHealth <= 0)
         {
             CurrentHealth = 0;
@@ -35,10 +35,8 @@ public class Health : MonoBehaviour
             var controller = this.GetComponent<BasicObjectController>();
             if(controller != null)
                 controller.OnZeroHealth();
-
         }
-        // update the health bar to reflect Current Health (health remaining)
-        HealthBar.sizeDelta = new Vector2(CurrentHealth, HealthBar.sizeDelta.y);
+        UpdateHealthBar();
     }
 
     /// <summary>
@@ -48,7 +46,9 @@ public class Health : MonoBehaviour
     public void TakeHeal(uint amount)
     {
         // add to health, but keep max health threshold
-        CurrentHealth = Math.Min(CurrentHealth += amount, MaxHealth);
+        CurrentHealth = (int)Math.Min(CurrentHealth += (int)amount, MaxHealth);
+
+        UpdateHealthBar();
     }
 
     /// <summary>
@@ -57,5 +57,14 @@ public class Health : MonoBehaviour
     public void UpdateMaxHealth(uint newMaxHealthAmount)
     {
         MaxHealth = newMaxHealthAmount;
+
+        UpdateHealthBar();
+    }
+    /// <summary>
+    /// update the health bar to reflect Current Health (health remaining)
+    /// </summary>
+    private void UpdateHealthBar()
+    {
+        HealthBar.sizeDelta = new Vector2(CurrentHealth, HealthBar.sizeDelta.y);
     }
 }

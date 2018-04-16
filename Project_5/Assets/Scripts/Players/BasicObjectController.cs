@@ -14,10 +14,10 @@ public abstract class BasicObjectController : NetworkBehaviour
     public void OnZeroHealth()
     {
         if (DoesRespawn)
-        {
-
-        }
+            Respawn();
         else
             Destroy(gameObject);
     }
+
+    public abstract void Respawn();
 }
