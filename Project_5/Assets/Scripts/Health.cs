@@ -1,15 +1,17 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    // TODO: allow PlayerController to change max health (e.g. increase in level)
-    public int MaxHealth = 100;
-    public RectTransform HealthBar;
+    // TODO: allow BasicObjectController to change max health (e.g. increase in level)
+    public uint MaxHealth = 100;
+
+    [Tooltip("Health bar visible to user")]
+    [SerializeField]
+    private RectTransform HealthBar;
 
     // do not show in IDE 
-    public int CurrentHealth { get; set; }
+    public uint CurrentHealth { get; set; }
 
 
     public Health()
@@ -18,12 +20,11 @@ public class Health : MonoBehaviour
     }
 
     /// <summary>
-    /// reduce the health of the user
+    /// reduce the health by the given amount
     /// </summary>
-    public void TakeDamage(int amount)
+    public void TakeDamage(uint amount)
     {
-        // negative health (adding to health) should call TakeHeal() method
-        if (amount <= 0)
+        if (amount == 0)
             return;
 
         CurrentHealth -= amount;
@@ -31,14 +32,30 @@ public class Health : MonoBehaviour
         {
             CurrentHealth = 0;
             Debug.Log("Dead");
+            var controller = this.GetComponent<BasicObjectController>();
+            if(controller != null)
+                controller.OnZeroHealth();
+
         }
         // update the health bar to reflect Current Health (health remaining)
         HealthBar.sizeDelta = new Vector2(CurrentHealth, HealthBar.sizeDelta.y);
     }
 
-    public void TakeHeal(int amount)
+    /// <summary>
+    /// increase the current health by the given amount
+    /// </summary>
+    /// <param name="amount"></param>
+    public void TakeHeal(uint amount)
     {
         // add to health, but keep max health threshold
         CurrentHealth = Math.Min(CurrentHealth += amount, MaxHealth);
+    }
+
+    /// <summary>
+    /// change max health to new value
+    /// </summary>
+    public void UpdateMaxHealth(uint newMaxHealthAmount)
+    {
+        MaxHealth = newMaxHealthAmount;
     }
 }

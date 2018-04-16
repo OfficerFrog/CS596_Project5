@@ -327,6 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca659d8acaf5e5b468f28886a3fa94a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DoesRespawn: 1
   BulletPrefab: {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9,
     type: 2}
   ProjectileSpawn: {fileID: 4070897653918090}
