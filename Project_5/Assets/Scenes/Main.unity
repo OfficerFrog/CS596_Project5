@@ -113,48 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &145649959
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4893444361362252, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4893444361362252, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4893444361362252, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4893444361362252, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4893444361362252, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4893444361362252, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4893444361362252, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4893444361362252, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &655104638
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,9 +559,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c09a49d32b66974bbeb5041fa1b5931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 1602900439750258, guid: a16fc92f3df96cd49959d7be625ba97c,
-    type: 2}
   NumberOfEnemies: 5
+  _enemyPrefab: {fileID: 1602900439750258, guid: a16fc92f3df96cd49959d7be625ba97c,
+    type: 2}
 --- !u!114 &2138809938
 MonoBehaviour:
   m_ObjectHideFlags: 0

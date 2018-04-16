@@ -3,9 +3,11 @@ using UnityEngine.Networking;
 
 public class EnemySpawner : NetworkBehaviour
 {
-
-    public GameObject EnemyPrefab;
     public int NumberOfEnemies;
+
+    [SerializeField]
+    private GameObject _enemyPrefab;
+    
 
     /// <summary>
     /// when server starts create and spawn enemies in random spots
@@ -24,7 +26,7 @@ public class EnemySpawner : NetworkBehaviour
                 Random.Range(0, 180),
                 0.0f);
 
-            GameObject enemy = Instantiate(EnemyPrefab, spawnPosition, spawnRotation);
+            GameObject enemy = Instantiate(_enemyPrefab, spawnPosition, spawnRotation);
             NetworkServer.Spawn(enemy);
         }
     }

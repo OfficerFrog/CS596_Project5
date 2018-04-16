@@ -285,7 +285,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\HealthOrb.cs" />
+    <Compile Include="Assets\Scripts\PickupItems\HealthOrb.cs" />
+    <Compile Include="Assets\Scripts\PickupItems\IPickupItem.cs" />
+    <Compile Include="Assets\Scripts\PickupItems\LargeAmmoClip.cs" />
+    <Compile Include="Assets\Scripts\PickupItems\MediumAmmoClip.cs" />
     <Compile Include="Assets\Scripts\Players\EnemyController.cs" />
     <Compile Include="Assets\Scripts\Players\BasicObjectController.cs" />
     <Compile Include="Assets\Scripts\Billboard.cs" />
