@@ -1,17 +1,19 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class Health : MonoBehaviour
 {
     // TODO: allow BasicObjectController to change max health (e.g. increase in level)
-    public uint MaxHealth = 100;
+    public int MaxHealth = 100;
 
     [Tooltip("Health bar visible to user")]
     [SerializeField]
     private RectTransform HealthBar;
 
     // do not show in IDE 
-    public int CurrentHealth { get; set; }
+    [SyncVar(hook = "UpdateHealthBar")]
+    public int CurrentHealth = 100;
 
 
     public Health()
@@ -54,7 +56,7 @@ public class Health : MonoBehaviour
     /// <summary>
     /// change max health to new value
     /// </summary>
-    public void UpdateMaxHealth(uint newMaxHealthAmount)
+    public void UpdateMaxHealth(int newMaxHealthAmount)
     {
         MaxHealth = newMaxHealthAmount;
 
