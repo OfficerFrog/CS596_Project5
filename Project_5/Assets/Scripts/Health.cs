@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 public class Health : NetworkBehaviour
 {
     // TODO: allow BasicObjectController to change max health (e.g. increase in level)
-    public uint MaxHealth = 100;
+    public int MaxHealth = 100;
 
     [Tooltip("Health bar visible to user")]
     [SerializeField]
@@ -59,7 +59,7 @@ public class Health : NetworkBehaviour
     /// <summary>
     /// change max health to new value
     /// </summary>
-    public void UpdateMaxHealth(uint newMaxHealthAmount)
+    public void UpdateMaxHealth(int newMaxHealthAmount)
     {
         MaxHealth = newMaxHealthAmount;
 
