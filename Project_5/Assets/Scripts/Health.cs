@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Health : NetworkBehaviour
+public class Health : MonoBehaviour
 {
     // TODO: allow BasicObjectController to change max health (e.g. increase in level)
     public uint MaxHealth = 100;
@@ -11,11 +10,11 @@ public class Health : NetworkBehaviour
     [SerializeField]
     private RectTransform HealthBar;
 
-    [SyncVar(hook = "UpdateHealthBar")]
-    [HideInInspector]
-    public int CurrentHealth;
+    // do not show in IDE 
+    public int CurrentHealth { get; set; }
 
-    void Awake()
+
+    public Health()
     {
         CurrentHealth = (int)MaxHealth;
     }
@@ -25,8 +24,7 @@ public class Health : NetworkBehaviour
     /// </summary>
     public void TakeDamage(uint amount)
     {
-        // only apply damage on server
-        if (!isServer || amount == 0)
+        if (amount == 0)
             return;
 
         CurrentHealth -= (int)amount;
@@ -44,12 +42,9 @@ public class Health : NetworkBehaviour
     /// <summary>
     /// increase the current health by the given amount
     /// </summary>
+    /// <param name="amount"></param>
     public void TakeHeal(uint amount)
     {
-        // only apply damage on server
-        if (!isServer)
-            return;
-
         // add to health, but keep max health threshold
         CurrentHealth = (int)Math.Min(CurrentHealth += (int)amount, MaxHealth);
 

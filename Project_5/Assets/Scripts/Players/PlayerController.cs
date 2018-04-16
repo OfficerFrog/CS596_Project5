@@ -6,36 +6,8 @@ public class PlayerController : BasicObjectController
 {
     // TODO: add ability to handle multiple weapons
 
-    /// <summary>
-    /// used to instantiate bullet
-    /// </summary>
-    [SerializeField]
-    private GameObject _bulletPrefab;
-
-    /// <summary>
-    /// used to instantiate projectile's spawn point
-    /// </summary>
-    [SerializeField]
-    private Transform _projectileSpawn;
-
-    /// <summary>
-    /// max amount of bullets player can hold
-    /// </summary>
-    [SerializeField]
-    private uint _bulletCapacity;
-
-    /// <summary>
-    /// amount of bullets player currently has
-    /// </summary>
-    private uint _currentBulletAmmo;
-
-    /// <summary>
-    /// used instead of constructor (which doesnt work for setting fields)
-    /// </summary>
-    void Awake()
-    {
-        _currentBulletAmmo = _bulletCapacity;
-    }
+    public GameObject BulletPrefab;
+    public Transform ProjectileSpawn;
 
     void Update()
     {
@@ -75,21 +47,15 @@ public class PlayerController : BasicObjectController
     [Command]
     void CmdFire()
     {
-        if (_currentBulletAmmo == 0)
-        {
-            // TODO: notify user
-            return;
-        }
-        // update bullets  (TODO: if have different types of ammo, need to move this)
-        _currentBulletAmmo -= 1;
+        this.GetComponent<Health>().TakeDamage(10);
 
         // create an instane of the projectile we want to fire
         GameObject projectile = Instantiate(
-            _bulletPrefab,
-            _projectileSpawn.position,
-            _projectileSpawn.rotation);
+            BulletPrefab,
+            ProjectileSpawn.position,
+            ProjectileSpawn.rotation);
 
-        // TODO: Would be better if projectile did this itself when instantiated
+        // TODO: Would be better if projectile did itself when instantiated
         // give the projectile some velocity; 
         projectile.GetComponent<Bullet>().SetVelocity(projectile.transform.forward);
 
@@ -118,19 +84,9 @@ public class PlayerController : BasicObjectController
     /// </remarks>
     void OnTriggerEnter(Collider collision)
     {
-        var pickupItem = collision.gameObject.GetComponent<IPickupItem>();
-        if (pickupItem != null)
+        if (collision.gameObject.name == "HealthObject")
         {
-            switch (pickupItem.Type)
-            {
-                case PickupType.Ammo:
-                    AddAmmoToPlayer(pickupItem.Amount);
-                    break;
-
-                case PickupType.Health:
-                    AddHealthToPlayer(pickupItem.Amount);
-                    break;
-            }
+            AddHealthToPlayer(collision.gameObject.GetComponent<HealthOrb>().Health);
             Destroy(collision.gameObject);
         }
     }
@@ -139,14 +95,6 @@ public class PlayerController : BasicObjectController
     {
         this.GetComponent<Health>().TakeHeal(healthAmount);
     }
-
-    private void AddAmmoToPlayer(uint ammoAmount)
-    {
-        _currentBulletAmmo += ammoAmount;
-        if (_currentBulletAmmo > _bulletCapacity)
-            _currentBulletAmmo = _bulletCapacity;
-    }
-
 
     /// <summary>
     /// respawn player (in set time and place)

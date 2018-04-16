@@ -328,10 +328,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoesRespawn: 1
-  _bulletPrefab: {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9,
+  BulletPrefab: {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9,
     type: 2}
-  _projectileSpawn: {fileID: 4070897653918090}
-  _bulletCapacity: 10
+  ProjectileSpawn: {fileID: 4070897653918090}
 --- !u!114 &114350904711973672
 MonoBehaviour:
   m_ObjectHideFlags: 1
