@@ -90,7 +90,7 @@ MonoBehaviour:
   m_MinSize: {x: 713, y: 492}
   m_MaxSize: {x: 18008, y: 14042}
   vertical: 0
-  controlID: 78
+  controlID: 100
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -309,18 +309,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scripts
+    - Assets/Scenes
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Scenes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\Program Files\CS596\CS596_Project5\Project_5
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 9e280000
-    m_LastClickedID: 10398
+    m_SelectedIDs: ec290000
+    m_LastClickedID: 10732
     m_ExpandedIDs: 00000000e6270000942800009e2800004029000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -509,14 +509,14 @@ MonoBehaviour:
     height: 936
   m_PersistentViewDataDictionary: {fileID: 0}
   m_SceneLighting: 1
-  lastFramingTime: 24.8203510653696
+  lastFramingTime: 1395.6145671983252
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 518.5074, y: 331.37207, z: -5.790747}
+    m_Target: {x: -3.5714805, y: 2.0071445, z: -0.1111115}
     speed: 2
-    m_Value: {x: 518.5074, y: 331.37207, z: -5.790747}
+    m_Value: {x: -3.5714805, y: 2.0071445, z: -0.1111115}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -544,9 +544,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 853.4173
+    m_Target: 33.142147
     speed: 2
-    m_Value: 853.4173
+    m_Value: 33.142147
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -587,28 +587,28 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-    m_ExpandedIDs: a4f8ffffbaf8ffff8cf9ffff9efbffff00000000
+    m_SelectedIDs: 0065feff
+    m_LastClickedID: -105216
+    m_ExpandedIDs: 7a6bfeffee75feffb6a1feff54a3feff7aa4feffd4adfeffb6d1feff1aaeffff30aeffffa2afffffe0f2fffffcf7ffff74f9ffff9efbffff000000006a2d000012300000dc3400007e370000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: Enemy Spawner
+      m_OriginalName: Enemy Spawner
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 13886
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 0
       m_ClientGUIView: {fileID: 9}
     m_SearchString: 
   m_ExpandedScenes:
-  - Credits
+  - Main
   m_CurrenRootInstanceID: 0
   m_Locked: 0
   m_CurrentSortingName: TransformSorting
