@@ -13,8 +13,12 @@ public class Health : NetworkBehaviour
 
     [SyncVar(hook = "UpdateHealthBar")]
     [HideInInspector]
-    public int CurrentHealth = 100;
+    public int CurrentHealth = HealthBarLength; // just some default; will be updated in Awake
 
+    /// <summary>
+    /// the length of the health bar (in pixels or whatever)
+    /// </summary>
+    private const int HealthBarLength = 100;
 
     void Awake()
     {
@@ -23,6 +27,7 @@ public class Health : NetworkBehaviour
 
     /// <summary>
     /// reduce the health by the given amount
+    /// Only applied on server, then changes are then synchronized on the Clients.
     /// </summary>
     public void TakeDamage(uint amount)
     {
@@ -30,8 +35,8 @@ public class Health : NetworkBehaviour
         if (!isServer || amount == 0)
             return;
 
-        CurrentHealth -= (int)amount;
-        if (CurrentHealth <= 0)
+        // limit the number of times SyncVar is set to limit chatter
+        if(CurrentHealth - (int)amount <= 0)
         {
             CurrentHealth = 0;
             Debug.Log("Dead");
@@ -39,13 +44,15 @@ public class Health : NetworkBehaviour
             if(controller != null)
                 controller.OnZeroHealth();
         }
-        UpdateHealthBar();
+        else
+            CurrentHealth -= (int)amount;
+        //UpdateHealthBar(CurrentHealth);
     }
 
     /// <summary>
     /// increase the current health by the given amount
+    /// Only applied on server, then changes are then synchronized on the Clients.
     /// </summary>
-    /// <param name="amount"></param>
     public void TakeHeal(uint amount)
     {
         // only apply damage on server
@@ -53,25 +60,28 @@ public class Health : NetworkBehaviour
             return;
 
         // add to health, but keep max health threshold
-        CurrentHealth = (int)Math.Min(CurrentHealth += (int)amount, MaxHealth);
+        CurrentHealth = (int)Math.Min(CurrentHealth + (int)amount, MaxHealth);
 
-        UpdateHealthBar();
+        //UpdateHealthBar(CurrentHealth);
     }
 
     /// <summary>
     /// change max health to new value
+    /// Only applied on server, then changes are then synchronized on the Clients.
     /// </summary>
     public void UpdateMaxHealth(uint newMaxHealthAmount)
     {
         MaxHealth = newMaxHealthAmount;
 
-        UpdateHealthBar();
+        //UpdateHealthBar(CurrentHealth);
     }
     /// <summary>
     /// update the health bar to reflect Current Health (health remaining)
     /// </summary>
-    private void UpdateHealthBar()
+    private void UpdateHealthBar(int currentHealth)
     {
-        HealthBar.sizeDelta = new Vector2(CurrentHealth, HealthBar.sizeDelta.y);
+        // calculate the how the current health bar should look, using the max health
+        int currentHealthBarLength = (int)(((float)HealthBarLength / (float)MaxHealth) * (float)currentHealth);
+        HealthBar.sizeDelta = new Vector2(currentHealthBarLength, HealthBar.sizeDelta.y);
     }
 }

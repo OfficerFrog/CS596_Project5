@@ -327,10 +327,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca659d8acaf5e5b468f28886a3fa94a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DoesRespawn: 1
-  BulletPrefab: {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9,
+  _doesRespawn: 0
+  _bulletPrefab: {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9,
     type: 2}
-  ProjectileSpawn: {fileID: 4070897653918090}
+  _projectileSpawn: {fileID: 4070897653918090}
+  _bulletCapacity: 50
 --- !u!114 &114350904711973672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -423,8 +424,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ae0293a0a69a348b11a2f279b73a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  MaxHealth: 200
   HealthBar: {fileID: 224979683741278016}
+  CurrentHealth: 100
 --- !u!136 &136180440724004416
 CapsuleCollider:
   m_ObjectHideFlags: 1
