@@ -6,8 +6,8 @@ public class Bullet : Projectile
         get { return 10; }
     }
 
-    public override int Velocity
+    public override float Velocity
     {
-        get { return 7; }
+        get { return 7f; }
     }
 }

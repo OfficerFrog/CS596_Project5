@@ -44,7 +44,7 @@ public class PlayerController : BasicObjectController
 
         UpdateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Return))
             CmdFire();
     }
 
@@ -89,9 +89,9 @@ public class PlayerController : BasicObjectController
             _projectileSpawn.position,
             _projectileSpawn.rotation);
 
-        // TODO: Would be better if projectile did itself when instantiated
-        // give the projectile some velocity; 
-        projectile.GetComponent<Bullet>().SetVelocity(projectile.transform.forward);
+        // give the projectile some velocity
+        float initialVelocity = this.GetComponent<Rigidbody>().velocity.magnitude;
+        projectile.GetComponent<Bullet>().SetVelocity(initialVelocity, projectile.transform.forward);
 
         // spawn the projectile on al of the connected Clients
         NetworkServer.Spawn(projectile);
@@ -105,10 +105,10 @@ public class PlayerController : BasicObjectController
     /// <summary>
     /// display the player of the current user as Blue
     /// </summary>
-    public override void OnStartLocalPlayer()
-    {
-        this.GetComponent<MeshRenderer>().material.color = Color.blue;
-    }
+    //public override void OnStartLocalPlayer()
+    //{
+    //    this.GetComponent<MeshRenderer>().material.color = Color.blue;
+    //}
 
     /// <summary>
     /// player ran into something, see if it is an object it can pick up

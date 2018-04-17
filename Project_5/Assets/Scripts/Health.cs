@@ -46,7 +46,6 @@ public class Health : NetworkBehaviour
         }
         else
             CurrentHealth -= (int)amount;
-        //UpdateHealthBar(CurrentHealth);
     }
 
     /// <summary>
@@ -59,10 +58,8 @@ public class Health : NetworkBehaviour
         if (!isServer)
             return;
 
-        // add to health, but keep max health threshold
+        // add to health, but keep within max health threshold
         CurrentHealth = (int)Math.Min(CurrentHealth + (int)amount, MaxHealth);
-
-        //UpdateHealthBar(CurrentHealth);
     }
 
     /// <summary>
