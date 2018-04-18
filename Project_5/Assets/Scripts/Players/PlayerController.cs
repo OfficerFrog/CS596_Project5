@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : BasicObjectController
 {
@@ -46,6 +47,9 @@ public class PlayerController : BasicObjectController
 
         if (Input.GetKeyDown(KeyCode.Return))
             CmdFire();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene("Menu");
     }
 
     private void UpdateMovement()
