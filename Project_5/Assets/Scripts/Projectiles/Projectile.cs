@@ -1,7 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class Projectile : MonoBehaviour
 {
+
+    private EnemySpawner enemySpawnerScript;
+    private int enemyCount;
+
+    private void Awake()
+    {
+        //gets and stores enemies spawned at start
+        enemySpawnerScript = GetComponent<EnemySpawner>();
+        enemyCount = enemySpawnerScript.NumberOfEnemies;
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         // if object collided with has health, reduce it
@@ -12,6 +24,11 @@ public abstract class Projectile : MonoBehaviour
 
         // remove projectile from game when it collides with anything
         Destroy(gameObject);
+
+        //ends game if all enemies are defeated
+        enemyCount--;
+        if (enemyCount == 0)
+            SceneManager.LoadScene("Game Win");
     }
 
     /// <summary>
