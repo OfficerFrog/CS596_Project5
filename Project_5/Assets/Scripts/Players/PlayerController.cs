@@ -1,23 +1,10 @@
 ﻿
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class PlayerController : BasicObjectController
+public class PlayerController : BasicPlayerController
 {
     // TODO: add ability to handle multiple weapons
-
-    /// <summary>
-    /// used to instantiate bullet
-    /// </summary>
-    [SerializeField]
-    private GameObject _bulletPrefab;
-
-    /// <summary>
-    /// used to instantiate projectile's spawn point
-    /// </summary>
-    [SerializeField]
-    private Transform _projectileSpawn;
 
     /// <summary>
     /// max amount of bullets player can hold
@@ -30,12 +17,22 @@ public class PlayerController : BasicObjectController
     /// </summary>
     private uint _currentBulletAmmo;
 
+    // TODO: remove and let GameManager handle status of Enemies
+    private int _enemyCount;
+
+    public override ObjectWithExperience ExperienceData
+    {
+        get { return new ObjectWithExperience { Type = ObjectWithExperienceType.Player, Experience = 0 }; }
+    }
+
     /// <summary>
     /// used instead of constructor (which doesnt work for setting fields)
     /// </summary>
     void Awake()
     {
         _currentBulletAmmo = _bulletCapacity;
+        // get EnemySpawner found in scene
+        _enemyCount = GameObject.FindObjectOfType<EnemySpawner>().NumberOfEnemies;
     }
 
     void Update()
@@ -46,9 +43,8 @@ public class PlayerController : BasicObjectController
         UpdateMovement();
 
         if (Input.GetKeyDown(KeyCode.Return))
-            CmdFire();
-
-        if (Input.GetKeyDown(KeyCode.Escape))
+            WeaponShot();
+        else  if (Input.GetKeyDown(KeyCode.Escape))
             SceneManager.LoadScene("Menu");
     }
 
@@ -71,13 +67,10 @@ public class PlayerController : BasicObjectController
             // forward/back or left/right
             float newLeftRightMovement = horizontalMovement * 3.0f;  // want left/right speed to be equal to front/back
             transform.Translate(newLeftRightMovement, 0, verticalMovement);
-
         }
     }
 
-    // [Command] code is called on the Client but ran on the Server
-    [Command]
-    void CmdFire()
+    private void WeaponShot()
     {
         if (_currentBulletAmmo == 0)
         {
@@ -87,23 +80,8 @@ public class PlayerController : BasicObjectController
         // update bullets  (TODO: if have different types of ammo, need to move this)
         _currentBulletAmmo -= 1;
 
-        // create an instane of the projectile we want to fire
-        GameObject projectile = Instantiate(
-            _bulletPrefab,
-            _projectileSpawn.position,
-            _projectileSpawn.rotation);
-
-        // give the projectile some velocity
-        float initialVelocity = this.GetComponent<Rigidbody>().velocity.magnitude;
-        projectile.GetComponent<Bullet>().SetVelocity(initialVelocity, projectile.transform.forward);
-
-        // spawn the projectile on al of the connected Clients
-        NetworkServer.Spawn(projectile);
-
-        // destroy it after some arbitrary amount of time; 2 seconds seems good enough
-        Destroy(projectile, 2.0f);
+        CmdFire();
     }
-
 
 
     /// <summary>
@@ -135,6 +113,7 @@ public class PlayerController : BasicObjectController
                     AddHealthToPlayer(pickupItem.Amount);
                     break;
             }
+            // remove picked up item
             Destroy(collision.gameObject);
         }
     }
@@ -157,5 +136,13 @@ public class PlayerController : BasicObjectController
     public override void Respawn()
     {
         
+    }
+
+    public override void EnemyKilled(DismissibleObjectController enemy)
+    {
+        // TODO: remove and let GameManager handle status of Enemies
+        // ends game if all enemies are defeated (* assumes only one player killed all enemies)
+        if (ObjectsDestroyedCounts[enemy.ExperienceData.Type] == _enemyCount)
+            SceneManager.LoadScene("Game Win");
     }
 }

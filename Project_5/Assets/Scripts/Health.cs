@@ -29,7 +29,7 @@ public class Health : NetworkBehaviour
     /// reduce the health by the given amount
     /// Only applied on server, then changes are then synchronized on the Clients.
     /// </summary>
-    public void TakeDamage(uint amount)
+    public void TakeDamage(BasicPlayerController shootingPlayer,  uint amount)
     {
         // only apply damage on server
         if (!isServer || amount == 0)
@@ -38,11 +38,16 @@ public class Health : NetworkBehaviour
         // limit the number of times SyncVar is set to limit chatter
         if(CurrentHealth - (int)amount <= 0)
         {
-            CurrentHealth = 0;
-            Debug.Log("Dead");
-            var controller = this.GetComponent<BasicObjectController>();
-            if(controller != null)
-                controller.OnZeroHealth();
+            // object is dead
+            CurrentHealth = 0;// remove dead object
+            var shotObject = this.GetComponent<DismissibleObjectController>();
+            if (shotObject != null)
+            {
+                // alert shooter
+                shootingPlayer.ObjectDestroyed(shotObject);
+                // alert shot object
+                shotObject.OnZeroHealth();
+            }
         }
         else
             CurrentHealth -= (int)amount;

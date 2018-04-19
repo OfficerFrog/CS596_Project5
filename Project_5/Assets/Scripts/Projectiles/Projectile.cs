@@ -1,18 +1,12 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public abstract class Projectile : MonoBehaviour
 {
-
-    private EnemySpawner enemySpawnerScript;
-    private int enemyCount;
-
-    private void Awake()
-    {
-        //gets and stores enemies spawned at start
-        enemySpawnerScript = GetComponent<EnemySpawner>();
-        enemyCount = enemySpawnerScript.NumberOfEnemies;
-    }
+    /// <summary>
+    /// playerId of player that fired projectile
+    /// </summary>
+    [HideInInspector]
+    public BasicPlayerController FiringPlayer { get; set; }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -20,15 +14,10 @@ public abstract class Projectile : MonoBehaviour
         GameObject collisionObject = collision.gameObject;
         var health = collisionObject.GetComponent<Health>();
         if (health != null)
-            health.TakeDamage(Damage);
+            health.TakeDamage(FiringPlayer, Damage);
 
         // remove projectile from game when it collides with anything
         Destroy(gameObject);
-
-        //ends game if all enemies are defeated
-        enemyCount--;
-        if (enemyCount == 0)
-            SceneManager.LoadScene("Game Win");
     }
 
     /// <summary>
