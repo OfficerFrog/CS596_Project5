@@ -11,7 +11,7 @@ public class Health : NetworkBehaviour
     [SerializeField]
     private RectTransform HealthBar;
 
-    [SyncVar(hook = "UpdateHealthBar")]
+    [SyncVar(hook = "OnHealthChanged")]
     [HideInInspector]
     public int CurrentHealth = HealthBarLength; // just some default; will be updated in Awake
 
@@ -29,10 +29,10 @@ public class Health : NetworkBehaviour
     /// reduce the health by the given amount
     /// Only applied on server, then changes are then synchronized on the Clients.
     /// </summary>
+    [Server]
     public void TakeDamage(BasicPlayerController shootingPlayer,  uint amount)
     {
-        // only apply damage on server
-        if (!isServer || amount == 0)
+        if (amount == 0)
             return;
 
         // limit the number of times SyncVar is set to limit chatter
@@ -56,15 +56,16 @@ public class Health : NetworkBehaviour
     /// <summary>
     /// increase the current health by the given amount
     /// Only applied on server, then changes are then synchronized on the Clients.
+    /// Returns True if was a gain in health
     /// </summary>
-    public void TakeHeal(uint amount)
+    [Server]
+    public bool TakeHeal(uint amount)
     {
-        // only apply damage on server
-        if (!isServer)
-            return;
-
+        if (CurrentHealth >= MaxHealth)
+            return false;
         // add to health, but keep within max health threshold
         CurrentHealth = (int)Math.Min(CurrentHealth + (int)amount, MaxHealth);
+        return true;
     }
 
     /// <summary>
@@ -80,7 +81,7 @@ public class Health : NetworkBehaviour
     /// <summary>
     /// update the health bar to reflect Current Health (health remaining)
     /// </summary>
-    private void UpdateHealthBar(int currentHealth)
+    private void OnHealthChanged(int currentHealth)
     {
         // calculate the how the current health bar should look, using the max health
         int currentHealthBarLength = (int)(((float)HealthBarLength / (float)MaxHealth) * (float)currentHealth);

@@ -11,6 +11,9 @@ public abstract class DismissibleObjectController : NetworkBehaviour
     [SerializeField]
     private bool _doesRespawn;
 
+    [SerializeField]
+    protected float RespawnTime = 5f;
+
     public abstract ObjectWithExperience ExperienceData { get; }
 
     /// <summary>
@@ -18,13 +21,17 @@ public abstract class DismissibleObjectController : NetworkBehaviour
     /// </summary>
     public void OnZeroHealth()
     {
+        OnKilled();
+
         if (_doesRespawn)
-            Respawn();
+            Respawn(RespawnTime);
         else
             Destroy(gameObject);
     }
 
-    public abstract void Respawn();
+    public virtual void OnKilled() { }
+
+    public abstract void Respawn(float inTime);
 }
 
 /// <summary>

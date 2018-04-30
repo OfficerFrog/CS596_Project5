@@ -8,4 +8,9 @@ public class MediumAmmoClip : MonoBehaviour, IPickupItem
     {
         get { return 20; }
     }
+
+    public uint Experience
+    {
+        get { return 10; }
+    }
 }

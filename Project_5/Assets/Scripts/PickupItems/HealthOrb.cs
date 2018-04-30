@@ -14,5 +14,10 @@ public class HealthOrb : MonoBehaviour, IPickupItem
     {
         get { return 30; }
     }
+
+    public uint Experience
+    {
+        get { return 30; }
+    }
 }
 

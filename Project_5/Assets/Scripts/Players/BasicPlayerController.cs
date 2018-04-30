@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 using System.Linq;
 
 /// <summary>
@@ -11,6 +10,13 @@ using System.Linq;
 /// </summary>
 public abstract class BasicPlayerController : DismissibleObjectController
 {
+    //[SerializeField]
+    //protected ToggleEvent OnToggleShared;
+    //[SerializeField]
+    //protected ToggleEvent OnToggleLocal;
+    //[SerializeField]
+    //protected ToggleEvent OnToggleRemote;
+
     /// <summary>
     /// used to instantiate bullet
     /// </summary>
@@ -37,6 +43,7 @@ public abstract class BasicPlayerController : DismissibleObjectController
     [SyncVar]
     public int CurrentExperience;
 
+    // Really TODO: not getting initialized correctly
     // TODO: keep track of players killed (via PlayerId)
     /// <summary>
     /// count of objects (enemies, walls, etc) destroyed/killed
@@ -44,17 +51,21 @@ public abstract class BasicPlayerController : DismissibleObjectController
     /// <remarks>
     /// Public to be accessible by the GameManager and/or end game
     /// </remarks>
-    public Dictionary<ObjectWithExperienceType, int> ObjectsDestroyedCounts;
+    //public Dictionary<ObjectWithExperienceType, int> ObjectsDestroyedCounts;
 
 
     void Start()
     {
+        //ObjectsDestroyedCounts = Enum.GetValues(typeof(ObjectWithExperienceType))
+        //    .OfType<ObjectWithExperienceType>()
+        //    .ToDictionary(e => e, e => 0);
+        if (!isLocalPlayer)
+            return;
+
         PlayerId = new Guid().ToString();
         // defaul all to 0
-        ObjectsDestroyedCounts = Enum.GetValues(typeof(ObjectWithExperienceType))
-            .OfType<ObjectWithExperienceType>()
-            .ToDictionary(e => e, e => 0);
-       
+
+
     }
 
     // [Command] code is called on the Client but ran on the Server
@@ -85,11 +96,35 @@ public abstract class BasicPlayerController : DismissibleObjectController
     /// </summary>
     public void ObjectDestroyed(DismissibleObjectController destroyedObject)
     {
+        if (!isLocalPlayer)
+            return;
+
         CurrentExperience += destroyedObject.ExperienceData.Experience;
-        ObjectsDestroyedCounts[destroyedObject.ExperienceData.Type] += 1;
+        //ObjectsDestroyedCounts[destroyedObject.ExperienceData.Type] += 1;
         if (destroyedObject.ExperienceData.Type == ObjectWithExperienceType.Player)
             EnemyKilled(destroyedObject);
     }
 
     public abstract void EnemyKilled(DismissibleObjectController enemy);
+
+    /// <summary>
+    /// respawn player (in set time and place)
+    /// </summary>
+    public override void Respawn(float inTime)
+    {
+        // spawn player in different position
+        if (isLocalPlayer)
+        {
+            Transform spawn = GetSpawnLocation();
+            transform.position = spawn.position;
+            transform.rotation = spawn.rotation;
+
+            //anim.SetTrigger("Restart");
+        }
+
+        OnRespawned();
+    }
+
+    public abstract Transform GetSpawnLocation();
+    public abstract void OnRespawned();
 }
