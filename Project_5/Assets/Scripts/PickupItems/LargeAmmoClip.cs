@@ -4,12 +4,12 @@ public class LargeAmmoClip : MonoBehaviour, IPickupItem
 {
     public PickupType Type { get { return PickupType.Ammo; } }
 
-    public uint Amount
+    public int Amount
     {
         get { return 50; }
     }
 
-    public uint Experience
+    public int Experience
     {
         get { return 20; }
     }

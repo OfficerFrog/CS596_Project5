@@ -23,7 +23,7 @@ public abstract class Projectile : MonoBehaviour
     /// <summary>
     /// the amount to take away from health when this projectile hits something
     /// </summary>
-    protected abstract uint Damage { get; }
+    protected abstract int Damage { get; }
 
     /// <summary>
     /// how fast this projectile should go after being fired

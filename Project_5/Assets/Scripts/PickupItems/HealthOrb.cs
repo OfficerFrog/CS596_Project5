@@ -10,12 +10,12 @@ public class HealthOrb : MonoBehaviour, IPickupItem
     /// <summary>
     /// how much health should be gained when picked up
     /// </summary>
-    public uint Amount
+    public int Amount
     {
         get { return 30; }
     }
 
-    public uint Experience
+    public int Experience
     {
         get { return 30; }
     }

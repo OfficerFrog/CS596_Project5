@@ -9,23 +9,31 @@ public class PlayerController : BasicPlayerController
     /// max amount of bullets player can hold
     /// </summary>
     [SerializeField]
-    private uint _bulletCapacity;
+    private int _bulletCapacity;
+
+    [SerializeField]
+    private float _shotCooldown = .3f;
 
     /// <summary>
     /// amount of bullets player currently has
     /// </summary>
-    [SyncVar]
-    private uint _currentBulletAmmo;
+    [SyncVar(hook = "OnCurrentBulletAmmoChanged")]
+    private int _currentBulletAmmo;
 
-    // TODO: remove and let GameManager handle status of Enemies
-    private int _enemyCount;
-
-    [SyncVar]
+    [SyncVar(hook = "OnEnemiesKilledChanged")]
     private int _enemiesKilled;
 
-
+    /// <summary>
+    /// the current experience the player has gained so far
+    /// </summary>
     [SyncVar(hook = "OnExperienceChanged")]
     private int _experience;
+
+    [SerializeField]
+    private int _killsToWin = 3;
+
+    [HideInInspector]
+    private float _ellapsedTime;
 
     public override ObjectWithExperience ExperienceData
     {
@@ -40,8 +48,6 @@ public class PlayerController : BasicPlayerController
             return;
 
         _currentBulletAmmo = _bulletCapacity;
-        // get EnemySpawner found in scene
-        _enemyCount = GameObject.FindObjectOfType<EnemySpawner>().NumberOfEnemies;
     }
 
     void Update()
@@ -49,10 +55,15 @@ public class PlayerController : BasicPlayerController
         if (!isLocalPlayer)
             return;
 
+        _ellapsedTime += Time.deltaTime;
+
         UpdateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return) && _ellapsedTime >= _shotCooldown)
+        {
+            _ellapsedTime = 0f;
             WeaponShot();
+        }
         else if (Input.GetKeyDown(KeyCode.Escape))
             SceneManager.LoadScene("Menu");
     }
@@ -60,9 +71,8 @@ public class PlayerController : BasicPlayerController
     private void EnablePlayer()
     {
         if (isLocalPlayer)
-        {
             PlayerCanvas.canvasInstance.Initialize();
-        }
+        
         //OnToggleShared.Invoke(true);
         //OnToggleLocal.Invoke(this.isLocalPlayer);
         //OnToggleRemote.Invoke(!this.isLocalPlayer);
@@ -112,15 +122,6 @@ public class PlayerController : BasicPlayerController
 
         CmdFire();
     }
-
-
-    /// <summary>
-    /// display the player of the current user as Blue
-    /// </summary>
-    //public override void OnStartLocalPlayer()
-    //{
-    //    this.GetComponent<MeshRenderer>().material.color = Color.blue;
-    //}
 
     /// <summary>
     /// player ran into something, see if it is an object it can pick up
@@ -172,14 +173,26 @@ public class PlayerController : BasicPlayerController
             _experience += (int)healthItem.Experience;
     }
 
+    // called from "_currentBulletAmmo" syncvar
+    void OnCurrentBulletAmmoChanged(int value)
+    {
+        if (isLocalPlayer)
+            PlayerCanvas.canvasInstance.SetAmmo(value);
+    }
+
+    // called from "_enemiesKilled" syncvar
+    void OnEnemiesKilledChanged(int value)
+    {
+        if (isLocalPlayer)
+            PlayerCanvas.canvasInstance.SetKills(value);
+    }
+
     // called from "_experience" syncvar
     void OnExperienceChanged(int value)
     {
-        //experience = value;
         if (isLocalPlayer)
             PlayerCanvas.canvasInstance.SetExperience(value);
     }
-
 
 
     public override void EnemyKilled(DismissibleObjectController enemy)
@@ -190,10 +203,7 @@ public class PlayerController : BasicPlayerController
         _enemiesKilled++;
         _experience += enemy.ExperienceData.Experience;
 
-        // TODO: remove and let GameManager handle status of Enemies
-        // ends game if all enemies are defeated (* assumes only one player killed all enemies)
-        //if (ObjectsDestroyedCounts[enemy.ExperienceData.Type] == _enemyCount)
-        if(_enemiesKilled == _enemyCount)
+        if (_enemiesKilled == _killsToWin)
             SceneManager.LoadScene("Game Win");
     }
 

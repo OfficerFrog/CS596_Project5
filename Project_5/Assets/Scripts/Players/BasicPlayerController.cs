@@ -34,14 +34,6 @@ public abstract class BasicPlayerController : DismissibleObjectController
     /// </summary>
     public string PlayerId { get; private set; }
 
-    /// <summary>
-    /// the current experience the player has gained so far
-    /// </summary>
-    /// <remarks>
-    /// Public to be accessible by the GameManager and/or end game
-    /// </remarks>
-    [SyncVar]
-    public int CurrentExperience;
 
     // Really TODO: not getting initialized correctly
     // TODO: keep track of players killed (via PlayerId)
@@ -56,16 +48,14 @@ public abstract class BasicPlayerController : DismissibleObjectController
 
     void Start()
     {
-        //ObjectsDestroyedCounts = Enum.GetValues(typeof(ObjectWithExperienceType))
-        //    .OfType<ObjectWithExperienceType>()
-        //    .ToDictionary(e => e, e => 0);
         if (!isLocalPlayer)
             return;
 
         PlayerId = new Guid().ToString();
-        // defaul all to 0
 
-
+        //ObjectsDestroyedCounts = Enum.GetValues(typeof(ObjectWithExperienceType))
+        //    .OfType<ObjectWithExperienceType>()
+        //    .ToDictionary(e => e, e => 0);
     }
 
     // [Command] code is called on the Client but ran on the Server
@@ -99,7 +89,6 @@ public abstract class BasicPlayerController : DismissibleObjectController
         if (!isLocalPlayer)
             return;
 
-        CurrentExperience += destroyedObject.ExperienceData.Experience;
         //ObjectsDestroyedCounts[destroyedObject.ExperienceData.Type] += 1;
         if (destroyedObject.ExperienceData.Type == ObjectWithExperienceType.Player)
             EnemyKilled(destroyedObject);

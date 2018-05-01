@@ -9,12 +9,16 @@ public class PlayerCanvas : MonoBehaviour
     //[SerializeField] Image reticule;
     //[SerializeField] UIFader damageImage;
     //[SerializeField] Text gameStatusText;
-    [SerializeField]
-    private Text _healthValue;
+
+    //[SerializeField]
+    //private Text _healthValue;
     [SerializeField]
     private Text _killsValue;
     [SerializeField]
     private Text _experienceValue;
+    [SerializeField]
+    private Text _ammoValue;
+
     //[SerializeField]
     //Text logText;
     //[SerializeField] AudioSource deathAudio;
@@ -42,7 +46,7 @@ public class PlayerCanvas : MonoBehaviour
 
     public void Initialize()
     {
-        _healthValue.text = "0";
+        _ammoValue.text = "0";
         _killsValue.text = "0";
         _experienceValue.text = "0";
     }
@@ -63,14 +67,19 @@ public class PlayerCanvas : MonoBehaviour
         _killsValue.text = amount.ToString();
     }
 
-    public void SetHealth(int amount)
-    {
-        _healthValue.text = amount.ToString();
-    }
+    //public void SetHealth(int amount)
+    //{
+    //    _healthValue.text = amount.ToString();
+    //}
 
     public void SetExperience(int amount)
     {
         _experienceValue.text = amount.ToString();
+    }
+
+    public void SetAmmo(int amount)
+    {
+        _ammoValue.text = amount.ToString();
     }
 
     public void WriteGameStatusText(string text)

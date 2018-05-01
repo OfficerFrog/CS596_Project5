@@ -495,7 +495,7 @@ GameObject:
   - component: {fileID: 222446981202116620}
   - component: {fileID: 114906416079281100}
   m_Layer: 5
-  m_Name: Value
+  m_Name: Ammo Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -865,7 +865,7 @@ GameObject:
   - component: {fileID: 222009550456793940}
   - component: {fileID: 114129319232683464}
   m_Layer: 5
-  m_Name: Value
+  m_Name: Experience Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1250,7 +1250,7 @@ GameObject:
   - component: {fileID: 222856791436379234}
   - component: {fileID: 114794832067812378}
   m_Layer: 5
-  m_Name: Value
+  m_Name: Kills Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3137,9 +3137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 121611f422004de4b9757cd87a7f30cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthValue: {fileID: 0}
-  killsValue: {fileID: 0}
-  experienceValue: {fileID: 0}
+  _killsValue: {fileID: 114794832067812378}
+  _experienceValue: {fileID: 114129319232683464}
+  _ammoValue: {fileID: 114906416079281100}
 --- !u!114 &114687954567274464
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -7,7 +7,7 @@
 public interface IPickupItem
 {
     PickupType Type { get; }
-    uint Amount { get; }
+    int Amount { get; }
 
-    uint Experience { get; }
+    int Experience { get; }
 }

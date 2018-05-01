@@ -7,7 +7,7 @@ public class EnemyController : BasicPlayerController
     // TODO: make experiene gained per enemy configurable (e.g. stronger enemies give more experience)
     public override ObjectWithExperience ExperienceData
     {
-        get { return new ObjectWithExperience { Type = ObjectWithExperienceType.Player, Experience = 1000 }; }
+        get { return new ObjectWithExperience { Type = ObjectWithExperienceType.Player, Experience = 500 }; }
     }
 
     // get enemy spawn location
