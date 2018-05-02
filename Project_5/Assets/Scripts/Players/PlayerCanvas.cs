@@ -6,12 +6,9 @@ public class PlayerCanvas : MonoBehaviour
     public static PlayerCanvas canvasInstance;
 
     [Header("Component References")]
-    //[SerializeField] Image reticule;
-    //[SerializeField] UIFader damageImage;
-    //[SerializeField] Text gameStatusText;
 
-    //[SerializeField]
-    //private Text _healthValue;
+    [SerializeField]
+    private Text _gameStatus;
     [SerializeField]
     private Text _killsValue;
     [SerializeField]
@@ -19,8 +16,7 @@ public class PlayerCanvas : MonoBehaviour
     [SerializeField]
     private Text _ammoValue;
 
-    //[SerializeField]
-    //Text logText;
+    //[SerializeField] UIFader damageImage;
     //[SerializeField] AudioSource deathAudio;
 
     //Ensure there is only one PlayerCanvas
@@ -32,23 +28,12 @@ public class PlayerCanvas : MonoBehaviour
             Destroy(gameObject);
     }
 
-    //Find all of our resources
-    //void Reset()
-    //{
-    //    reticule = GameObject.Find("Reticule").GetComponent();
-    //    damageImage = GameObject.Find("DamagedFlash").GetComponent();
-    //    gameStatusText = GameObject.Find("GameStatusText").GetComponent();
-    //    healthValue = GameObject.Find("HealthValue").GetComponent();
-    //    killsValue = GameObject.Find("KillsValue").GetComponent();
-    //    logText = GameObject.Find("LogText").GetComponent();
-    //    deathAudio = GameObject.Find("DeathAudio").GetComponent();
-    //}
-
     public void Initialize()
     {
-        _ammoValue.text = "0";
-        _killsValue.text = "0";
-        _experienceValue.text = "0";
+        SetAmmo(0);
+        SetKills(0);
+        SetExperience(0);
+        ClearGameStatusDisplay();
     }
 
     public void FlashDamageEffect()
@@ -67,11 +52,6 @@ public class PlayerCanvas : MonoBehaviour
         _killsValue.text = amount.ToString();
     }
 
-    //public void SetHealth(int amount)
-    //{
-    //    _healthValue.text = amount.ToString();
-    //}
-
     public void SetExperience(int amount)
     {
         _experienceValue.text = amount.ToString();
@@ -82,8 +62,14 @@ public class PlayerCanvas : MonoBehaviour
         _ammoValue.text = amount.ToString();
     }
 
-    public void WriteGameStatusText(string text)
+    public void DisplayGameStatus(string text)
     {
-        //gameStatusText.text = text;
+        _gameStatus.text = text;
+        Invoke("ClearGameStatusDisplay", 2f);
+    }
+
+    public void ClearGameStatusDisplay()
+    {
+        DisplayGameStatus("");
     }
 }

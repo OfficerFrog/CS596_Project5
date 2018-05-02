@@ -11,6 +11,7 @@ public class PlayerController : BasicPlayerController
     [SerializeField]
     private int _bulletCapacity;
 
+    [Tooltip("Minimum time between shots")]
     [SerializeField]
     private float _shotCooldown = .3f;
 
@@ -33,7 +34,7 @@ public class PlayerController : BasicPlayerController
     private int _killsToWin = 3;
 
     [HideInInspector]
-    private float _ellapsedTime;
+    private float _ellapsedTimeBetweenUpdates;
 
     public override ObjectWithExperience ExperienceData
     {
@@ -55,13 +56,13 @@ public class PlayerController : BasicPlayerController
         if (!isLocalPlayer)
             return;
 
-        _ellapsedTime += Time.deltaTime;
+        _ellapsedTimeBetweenUpdates += Time.deltaTime;
 
         UpdateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Return) && _ellapsedTime >= _shotCooldown)
+        if (Input.GetKeyDown(KeyCode.Return) && _ellapsedTimeBetweenUpdates >= _shotCooldown)
         {
-            _ellapsedTime = 0f;
+            _ellapsedTimeBetweenUpdates = 0f;
             WeaponShot();
         }
         else if (Input.GetKeyDown(KeyCode.Escape))
@@ -114,7 +115,7 @@ public class PlayerController : BasicPlayerController
     {
         if (_currentBulletAmmo == 0)
         {
-            // TODO: notify user
+            PlayerCanvas.canvasInstance.DisplayGameStatus("Out of Ammo!");
             return;
         }
         // update bullets  (TODO: if have different types of ammo, need to move this)
@@ -169,6 +170,7 @@ public class PlayerController : BasicPlayerController
 
     private void AddHealthToPlayer(IPickupItem healthItem)
     {
+        // only gain experience if increased health
         if (this.GetComponent<Health>().TakeHeal(healthItem.Amount))
             _experience += (int)healthItem.Experience;
     }
@@ -176,6 +178,7 @@ public class PlayerController : BasicPlayerController
     // called from "_currentBulletAmmo" syncvar
     void OnCurrentBulletAmmoChanged(int value)
     {
+        _currentBulletAmmo = value;// update client value
         if (isLocalPlayer)
             PlayerCanvas.canvasInstance.SetAmmo(value);
     }
@@ -183,6 +186,7 @@ public class PlayerController : BasicPlayerController
     // called from "_enemiesKilled" syncvar
     void OnEnemiesKilledChanged(int value)
     {
+        _enemiesKilled = value;// update client value
         if (isLocalPlayer)
             PlayerCanvas.canvasInstance.SetKills(value);
     }
@@ -190,6 +194,7 @@ public class PlayerController : BasicPlayerController
     // called from "_experience" syncvar
     void OnExperienceChanged(int value)
     {
+        _experience = value;// update client value
         if (isLocalPlayer)
             PlayerCanvas.canvasInstance.SetExperience(value);
     }
@@ -209,6 +214,9 @@ public class PlayerController : BasicPlayerController
 
     public override void OnKilled()
     {
+        if (!isLocalPlayer)
+            PlayerCanvas.canvasInstance.DisplayGameStatus("You Died!");
+
         DisablePlayer();
     }
 

@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 public class Health : NetworkBehaviour
 {
-    // TODO: allow BasicObjectController to change max health (e.g. increase in level)
+    // TODO: allow BasicPlayerController to change max health (e.g. increase in level)
     public int MaxHealth = 100;
 
     [Tooltip("Health bar visible to user")]
@@ -20,7 +20,8 @@ public class Health : NetworkBehaviour
     /// </summary>
     private const int HealthBarLength = 100;
 
-    void Awake()
+    // use Start (instead of Awake) so will know if local player or not
+    void Start()
     {
         CurrentHealth = (int)MaxHealth;
     }
@@ -83,6 +84,7 @@ public class Health : NetworkBehaviour
     /// </summary>
     private void OnHealthChanged(int currentHealth)
     {
+        CurrentHealth = currentHealth;
         // calculate the how the current health bar should look, using the max health
         int currentHealthBarLength = (int)(((float)HealthBarLength / (float)MaxHealth) * (float)currentHealth);
         HealthBar.sizeDelta = new Vector2(currentHealthBarLength, HealthBar.sizeDelta.y);
