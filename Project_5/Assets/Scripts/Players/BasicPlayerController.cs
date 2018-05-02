@@ -1,21 +1,20 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Linq;
+using UnityEngine.UI;
 
 /// <summary>
 /// Controller inherited by all players and enemies
 /// </summary>
 public abstract class BasicPlayerController : DismissibleObjectController
 {
-    //[SerializeField]
-    //protected ToggleEvent OnToggleShared;
-    //[SerializeField]
-    //protected ToggleEvent OnToggleLocal;
-    //[SerializeField]
-    //protected ToggleEvent OnToggleRemote;
+    [SerializeField]
+    protected Toggle.ToggleEvent OnToggleShared;
+    [SerializeField]
+    protected Toggle.ToggleEvent OnToggleLocal;
+    [SerializeField]
+    protected Toggle.ToggleEvent OnToggleRemote;
 
     /// <summary>
     /// used to instantiate bullet
@@ -104,11 +103,10 @@ public abstract class BasicPlayerController : DismissibleObjectController
         // spawn player in different position
         if (isLocalPlayer)
         {
+            // get the spawn location of the player type
             Transform spawn = GetSpawnLocation();
             transform.position = spawn.position;
             transform.rotation = spawn.rotation;
-
-            //anim.SetTrigger("Restart");
         }
 
         OnRespawned();

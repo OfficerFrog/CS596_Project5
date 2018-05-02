@@ -1,10 +1,17 @@
 ﻿
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : BasicPlayerController
 {
+    [SyncVar(hook = "OnNameChanged")]
+    public string PlayerName;
+    [SyncVar(hook = "OnColorChanged")]
+    public Color PlayerColor;
+
     /// <summary>
     /// max amount of bullets player can hold
     /// </summary>
@@ -71,12 +78,12 @@ public class PlayerController : BasicPlayerController
 
     private void EnablePlayer()
     {
+        OnToggleShared.Invoke(true);
+        OnToggleLocal.Invoke(this.isLocalPlayer);
+        OnToggleRemote.Invoke(!this.isLocalPlayer);
+
         if (isLocalPlayer)
             PlayerCanvas.canvasInstance.Initialize();
-        
-        //OnToggleShared.Invoke(true);
-        //OnToggleLocal.Invoke(this.isLocalPlayer);
-        //OnToggleRemote.Invoke(!this.isLocalPlayer);
     }
 
     /// <summary>
@@ -84,9 +91,11 @@ public class PlayerController : BasicPlayerController
     /// </summary>
     private void DisablePlayer()
     {
-        //OnToggleShared.Invoke(false);
-        //OnToggleLocal.Invoke(false);
-        //OnToggleRemote.Invoke(false);
+        OnToggleShared.Invoke(false);
+        if (isLocalPlayer)
+            OnToggleLocal.Invoke(false);
+        else
+            OnToggleRemote.Invoke(false);
     }
 
     private void UpdateMovement()
@@ -175,6 +184,26 @@ public class PlayerController : BasicPlayerController
             _experience += (int)healthItem.Experience;
     }
 
+    #region SyncVar hooks
+
+    void OnNameChanged(string value)
+    {
+        PlayerName = value;
+        this.gameObject.name = value; // useful for debugging
+        // TODO: set name, this will cause problems with more than one player
+        var found = GameObject.Find("PlayerNameCanvas");
+        
+    }
+
+    void OnColorChanged(Color value)
+    {
+        PlayerColor = value;
+        foreach (Renderer rend in this.GetComponentsInChildren<Renderer>())
+        {
+            rend.material.color = PlayerColor;
+        }
+    }
+
     // called from "_currentBulletAmmo" syncvar
     void OnCurrentBulletAmmoChanged(int value)
     {
@@ -199,6 +228,8 @@ public class PlayerController : BasicPlayerController
             PlayerCanvas.canvasInstance.SetExperience(value);
     }
 
+
+    #endregion SyncVar hooks
 
     public override void EnemyKilled(DismissibleObjectController enemy)
     {
