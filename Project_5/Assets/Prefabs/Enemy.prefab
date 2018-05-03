@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 114714960581605666}
   - component: {fileID: 114613818821212430}
   - component: {fileID: 114699322197407384}
+  - component: {fileID: 195146033362326452}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -506,6 +507,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 100
   HealthBar: {fileID: 224032148531949440}
+  CurrentHealth: 100
 --- !u!114 &114618045118064200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -544,7 +546,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfff1d4d8e8e5840b108cc268db668f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DoesRespawn: 0
+  _doesRespawn: 0
+  RespawnTime: 5
+  OnToggleShared:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnToggleLocal:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnToggleRemote:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _bulletPrefab: {fileID: 0}
+  _projectileSpawn: {fileID: 0}
 --- !u!114 &114714960581605666
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -579,6 +599,27 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!195 &195146033362326452
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1602900439750258}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 1.5
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!222 &222200330203944512
 CanvasRenderer:
   m_ObjectHideFlags: 1
