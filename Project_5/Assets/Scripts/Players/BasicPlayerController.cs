@@ -16,6 +16,12 @@ public abstract class BasicPlayerController : DismissibleObjectController
     [SerializeField]
     protected Toggle.ToggleEvent OnToggleRemote;
 
+    [Tooltip("Minimum time between shots")]
+    [SerializeField]
+    protected float _shotCooldown = .3f;
+
+    protected abstract float EllapsedTimeBetweenUpdates { get; set; }
+
     /// <summary>
     /// used to instantiate bullet
     /// </summary>
@@ -33,6 +39,7 @@ public abstract class BasicPlayerController : DismissibleObjectController
     /// </summary>
     public string PlayerId { get; private set; }
 
+    
 
     // Really TODO: not getting initialized correctly
     // TODO: keep track of players killed (via PlayerId)
@@ -55,6 +62,16 @@ public abstract class BasicPlayerController : DismissibleObjectController
         //ObjectsDestroyedCounts = Enum.GetValues(typeof(ObjectWithExperienceType))
         //    .OfType<ObjectWithExperienceType>()
         //    .ToDictionary(e => e, e => 0);
+    }
+
+    protected virtual bool CanFire()
+    {
+        if (EllapsedTimeBetweenUpdates >= _shotCooldown)
+        {
+            EllapsedTimeBetweenUpdates = 0;
+            return true;
+        }
+        return false;
     }
 
     // [Command] code is called on the Client but ran on the Server

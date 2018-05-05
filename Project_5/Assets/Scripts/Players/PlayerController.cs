@@ -1,9 +1,6 @@
-﻿
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PlayerController : BasicPlayerController
 {
@@ -11,16 +8,6 @@ public class PlayerController : BasicPlayerController
     public string PlayerName;
     [SyncVar(hook = "OnColorChanged")]
     public Color PlayerColor;
-
-    /// <summary>
-    /// max amount of bullets player can hold
-    /// </summary>
-    [SerializeField]
-    private int _bulletCapacity;
-
-    [Tooltip("Minimum time between shots")]
-    [SerializeField]
-    private float _shotCooldown = .3f;
 
     /// <summary>
     /// amount of bullets player currently has
@@ -37,11 +24,17 @@ public class PlayerController : BasicPlayerController
     [SyncVar(hook = "OnExperienceChanged")]
     private int _experience;
 
+    /// <summary>
+    /// max amount of bullets player can hold
+    /// </summary>
+    [SerializeField]
+    private int _bulletCapacity;
+
     [SerializeField]
     private int _killsToWin = 3;
 
     [HideInInspector]
-    private float _ellapsedTimeBetweenUpdates;
+    protected override float EllapsedTimeBetweenUpdates { get; set; }
 
     public override ObjectWithExperience ExperienceData
     {
@@ -63,15 +56,13 @@ public class PlayerController : BasicPlayerController
         if (!isLocalPlayer)
             return;
 
-        _ellapsedTimeBetweenUpdates += Time.deltaTime;
+        // need to update here, since base class Update() isnt called
+        EllapsedTimeBetweenUpdates += Time.deltaTime;
 
         UpdateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Return) && _ellapsedTimeBetweenUpdates >= _shotCooldown)
-        {
-            _ellapsedTimeBetweenUpdates = 0f;
+        if (Input.GetKeyDown(KeyCode.Return) && CanFire())
             WeaponShot();
-        }
         else if (Input.GetKeyDown(KeyCode.Escape))
             SceneManager.LoadScene("Menu");
     }

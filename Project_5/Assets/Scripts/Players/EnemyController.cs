@@ -12,8 +12,7 @@ public class EnemyController : BasicPlayerController
     [HideInInspector]
     private NavMeshAgent _navMesh;
 
-    [HideInInspector]
-    private float _currentTimeBeweenUpdates;
+    protected override float EllapsedTimeBetweenUpdates { get; set; }
 
     private void Start()
     {
@@ -22,15 +21,20 @@ public class EnemyController : BasicPlayerController
 
     private void Update()
     {
-        // reduce network traffic and computing by only calculating once per second, per enemy
-        _currentTimeBeweenUpdates += Time.deltaTime;
-        if (_currentTimeBeweenUpdates >= 1f)
+        // need to update here, since base class Update() isnt called
+        EllapsedTimeBetweenUpdates += Time.deltaTime;
+
+        GameObject player = GetNearestPlayer();
+        if (player == null)
         {
-            _currentTimeBeweenUpdates = 0;
-            GameObject player = GetNearestPlayer();
-            FollowPlayer(player);
+            // continue cruising along (OR go back to main spot)
         }
-        
+        else
+        {
+            FollowPlayer(player);
+            if (CanFire())
+                CmdFire();
+        }
     }
 
     public override ObjectWithExperience ExperienceData
@@ -38,7 +42,6 @@ public class EnemyController : BasicPlayerController
         get { return new ObjectWithExperience { Type = ObjectWithExperienceType.Player, Experience = 500 }; }
     }
 
-    // returns location of nearest player
     public GameObject GetNearestPlayer()
     {
         List<GameObject> players = GameObject.FindObjectsOfType<PlayerController>()

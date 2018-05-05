@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 114613818821212430}
   - component: {fileID: 114699322197407384}
   - component: {fileID: 195146033362326452}
+  - component: {fileID: 54025892177513036}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -387,6 +388,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1673182845663722}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &54025892177513036
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1602900439750258}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &114113912252781234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -563,9 +579,10 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  _shotCooldown: 0.8
   _bulletPrefab: {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9,
     type: 2}
-  _projectileSpawn: {fileID: 0}
+  _projectileSpawn: {fileID: 4562221575902622}
   _engagementRange: 20
 --- !u!114 &114714960581605666
 MonoBehaviour:
