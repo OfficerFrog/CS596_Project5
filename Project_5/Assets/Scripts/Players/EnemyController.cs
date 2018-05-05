@@ -1,28 +1,88 @@
-﻿
-
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyController : BasicPlayerController
 {
-    Transform playerPos;
-    Health playerHealth;
-    NavMeshAgent nav;
+    [Tooltip("Max distance enemy should engage player")]
+    [SerializeField]
+    private float _engagementRange = 5f;
 
-    private void Awake()
+    [HideInInspector]
+    private NavMeshAgent _navMesh;
+
+    [HideInInspector]
+    private float _currentTimeBeweenUpdates;
+
+    private void Start()
     {
-        playerPos = GetNearestPlayer();
+        _navMesh = this.GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
-        FollowPlayer(playerPos);
+        // reduce network traffic and computing by only calculating once per second, per enemy
+        _currentTimeBeweenUpdates += Time.deltaTime;
+        if (_currentTimeBeweenUpdates >= 1f)
+        {
+            _currentTimeBeweenUpdates = 0;
+            GameObject player = GetNearestPlayer();
+            FollowPlayer(player);
+        }
+        
     }
 
-    // TODO: make experiene gained per enemy configurable (e.g. stronger enemies give more experience)
     public override ObjectWithExperience ExperienceData
     {
         get { return new ObjectWithExperience { Type = ObjectWithExperienceType.Player, Experience = 500 }; }
+    }
+
+    // returns location of nearest player
+    public GameObject GetNearestPlayer()
+    {
+        List<GameObject> players = GameObject.FindObjectsOfType<PlayerController>()
+                                                                            .Select(p => p.gameObject)
+                                                                            .ToList();
+        if (!players.Any())
+            return null;
+
+        Vector3 myPosition = transform.position;
+        // order by the distance from enemy to each player, smallest first; pick the smallest that is within the max distance to engage
+        var closestPlayer = players.Select(player => new {player, dist = GetDistanceToPlayer(player, myPosition)}) // create new obj so only have to call GetDistanceToPlayer() onces
+            // sort smallest to largest
+            .OrderBy(playerDist => playerDist.dist) 
+            // pick the first that is within distance & has health
+            .FirstOrDefault(playerDist => playerDist.dist <= _engagementRange && DoesPlayerHaveHealth(playerDist.player));
+            // if none within range, return null
+        return closestPlayer == null ? null : closestPlayer.player.gameObject;
+    }
+
+    private float GetDistanceToPlayer(GameObject player, Vector3 myPosition)
+    {
+        Vector3 diff = player.transform.position - myPosition;
+        // dont care about Y-axis
+        float distance = Mathf.Sqrt(diff.x * diff.x + diff.z * diff.z);
+        return distance;
+    }
+
+    private bool DoesPlayerHaveHealth(GameObject player)
+    {
+        var playerHealth = player.GetComponent<Health>();
+        if (playerHealth == null || playerHealth.CurrentHealth <= 0)
+            return false;
+        return true;
+    }
+
+    public void FollowPlayer(GameObject player)
+    {
+        if (player == null)
+            _navMesh.enabled = false;
+        else
+        {
+            _navMesh.enabled = true;
+            _navMesh.SetDestination(player.transform.position);
+        }
     }
 
     // get enemy spawn location
@@ -39,39 +99,5 @@ public class EnemyController : BasicPlayerController
     public override void EnemyKilled(DismissibleObjectController enemy)
     {
         throw new System.NotImplementedException();
-    }
-
-    // returns location of nearest player
-    public Transform GetNearestPlayer()
-    {
-        GameObject[] player;
-        GameObject nearest = null;
-        player = GameObject.FindGameObjectsWithTag("Player");
-        float distance = Mathf.Infinity;
-        Vector3 position = transform.position;  
-        foreach (GameObject go in player)
-        {
-            Vector3 diff = go.transform.position - position;
-            float currDistance = diff.sqrMagnitude;
-            if (currDistance < distance)
-            {
-                nearest = go;
-                distance = currDistance;
-            }
-        }
-        playerHealth = nearest.GetComponent<Health>();
-        return nearest.transform;
-    }
-
-    public void FollowPlayer(Transform playerTrack)
-    {
-        if (playerHealth.CurrentHealth < 1){
-
-            nav.SetDestination(playerTrack.position);
-        }
-        else
-        {
-            nav.enabled = false;
-        }
     }
 }
