@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
@@ -138,41 +139,58 @@ public class PlayerController : BasicPlayerController
         var pickupItem = collision.gameObject.GetComponent<PickupItemBase>();
         if (pickupItem != null)
         {
+            bool wasItemPickedUp;
             switch (pickupItem.Type)
             {
                 case PickupType.Ammo:
-                    AddAmmoToPlayer(pickupItem);
+                    wasItemPickedUp = AddAmmoToPlayer(pickupItem);
                     break;
 
                 case PickupType.Health:
-                    AddHealthToPlayer(pickupItem);
+                    wasItemPickedUp = AddHealthToPlayer(pickupItem);
                     break;
                 default:
-                    return;
+                    throw new NotImplementedException();
             }
-            pickupItem.ItemPickedUp();
-            // remove picked up item
-            Destroy(collision.gameObject);
+
+            if (wasItemPickedUp)
+            {
+                // let item respawner know it was picked up so it can start the timer to respawn
+                pickupItem.ItemPickedUp();
+                // remove picked up item
+                Destroy(collision.gameObject);
+            }
         }
     }
 
-    private void AddAmmoToPlayer(IPickupItem ammoItem)
+    /// <summary>
+    /// returns True if ammo was added to stock
+    /// </summary>
+    private bool AddAmmoToPlayer(IPickupItem ammoItem)
     {
         if (_currentBulletAmmo >= _bulletCapacity)
-            return;
+            return false;
 
         _currentBulletAmmo += ammoItem.Amount;
         if (_currentBulletAmmo > _bulletCapacity)
             _currentBulletAmmo = _bulletCapacity;
         // add experience for picking up ammo
-        _experience += (int)ammoItem.Experience;
+        _experience += ammoItem.Experience;
+        return true;
     }
 
-    private void AddHealthToPlayer(IPickupItem healthItem)
+    /// <summary>
+    /// returns True if health was added 
+    /// </summary>
+    private bool AddHealthToPlayer(IPickupItem healthItem)
     {
         // only gain experience if increased health
         if (this.GetComponent<Health>().TakeHeal(healthItem.Amount))
-            _experience += (int)healthItem.Experience;
+        {
+            _experience += healthItem.Experience;
+            return true;
+        }
+        return false;
     }
 
     #region SyncVar hooks

@@ -23,7 +23,7 @@ public class Health : NetworkBehaviour
     // use Start (instead of Awake) so will know if local player or not
     void Start()
     {
-        CurrentHealth = (int)MaxHealth;
+        CurrentHealth = MaxHealth;
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class Health : NetworkBehaviour
             return;
 
         // limit the number of times SyncVar is set to limit chatter
-        if(CurrentHealth - (int)amount <= 0)
+        if(CurrentHealth - amount <= 0)
         {
             // object is dead
             CurrentHealth = 0;// remove dead object
@@ -51,7 +51,7 @@ public class Health : NetworkBehaviour
             }
         }
         else
-            CurrentHealth -= (int)amount;
+            CurrentHealth -= amount;
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class Health : NetworkBehaviour
         if (CurrentHealth >= MaxHealth)
             return false;
         // add to health, but keep within max health threshold
-        CurrentHealth = (int)Math.Min(CurrentHealth + (int)amount, MaxHealth);
+        CurrentHealth = Math.Min(CurrentHealth + amount, MaxHealth);
         return true;
     }
 
