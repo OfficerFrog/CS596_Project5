@@ -562,7 +562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfff1d4d8e8e5840b108cc268db668f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _doesRespawn: 0
+  _doesRespawn: 1
   RespawnTime: 5
   OnToggleShared:
     m_PersistentCalls:

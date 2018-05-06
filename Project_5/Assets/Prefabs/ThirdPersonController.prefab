@@ -3557,7 +3557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca659d8acaf5e5b468f28886a3fa94a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _doesRespawn: 0
+  _doesRespawn: 1
   RespawnTime: 5
   OnToggleShared:
     m_PersistentCalls:
@@ -3607,13 +3607,13 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  _shotCooldown: 0.3
   _bulletPrefab: {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9,
     type: 2}
   _projectileSpawn: {fileID: 4509003688888832}
   PlayerName: 
   PlayerColor: {r: 0, g: 0, b: 0, a: 0}
   _bulletCapacity: 50
-  _shotCooldown: 0.3
   _killsToWin: 3
 --- !u!114 &114906416079281100
 MonoBehaviour:
