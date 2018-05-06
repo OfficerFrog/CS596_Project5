@@ -10,6 +10,8 @@ public class PlayerCanvas : MonoBehaviour
     [SerializeField]
     private Text _gameStatus;
     [SerializeField]
+    private Text _healthValue;
+    [SerializeField]
     private Text _killsValue;
     [SerializeField]
     private Text _experienceValue;
@@ -30,6 +32,7 @@ public class PlayerCanvas : MonoBehaviour
 
     public void Initialize()
     {
+        SetHealth(0);
         SetAmmo(0);
         SetKills(0);
         SetExperience(0);
@@ -45,6 +48,11 @@ public class PlayerCanvas : MonoBehaviour
     {
         //if (!deathAudio.isPlaying)
         //    deathAudio.Play();
+    }
+
+    public void SetHealth(int amount)
+    {
+        _healthValue.text = amount.ToString();
     }
 
     public void SetKills(int amount)

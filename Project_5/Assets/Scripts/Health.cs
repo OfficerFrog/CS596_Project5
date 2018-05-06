@@ -85,6 +85,8 @@ public class Health : NetworkBehaviour
     private void OnHealthChanged(int currentHealth)
     {
         CurrentHealth = currentHealth;
+        if (isLocalPlayer)
+            PlayerCanvas.canvasInstance.SetHealth(currentHealth);
         // calculate the how the current health bar should look, using the max health
         int currentHealthBarLength = (int)(((float)HealthBarLength / (float)MaxHealth) * (float)currentHealth);
         HealthBar.sizeDelta = new Vector2(currentHealthBarLength, HealthBar.sizeDelta.y);

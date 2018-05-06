@@ -58,7 +58,10 @@ public class EnemyController : BasicPlayerController
             // pick the first that is within distance & has health
             .FirstOrDefault(playerDist => playerDist.dist <= _engagementRange && DoesPlayerHaveHealth(playerDist.player));
             // if none within range, return null
-        return closestPlayer == null ? null : closestPlayer.player.gameObject;
+        if(closestPlayer == null)
+            return null;
+        return closestPlayer.player.gameObject;
+        //return closestPlayer == null ? null : closestPlayer.player.gameObject;
     }
 
     private float GetDistanceToPlayer(GameObject player, Vector3 myPosition)
@@ -80,10 +83,11 @@ public class EnemyController : BasicPlayerController
     public void FollowPlayer(GameObject player)
     {
         if (player == null)
-            _navMesh.enabled = false;
+            _navMesh.isStopped = true;
+            //_navMesh.enabled = false;
         else
         {
-            _navMesh.enabled = true;
+            //_navMesh.enabled = true;
             _navMesh.SetDestination(player.transform.position);
         }
     }
