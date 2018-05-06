@@ -1998,10 +1998,9 @@ MonoBehaviour:
   m_OfflineScene: 
   m_OnlineScene: 
   m_SpawnPrefabs:
-  - {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9, type: 2}
   - {fileID: 1602900439750258, guid: a16fc92f3df96cd49959d7be625ba97c, type: 2}
-  - {fileID: 1401110206720462, guid: b02c7a66f83fc564c8e11e58efbb4834, type: 2}
-  m_CustomConfig: 0
+  - {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9, type: 2}
+  m_CustomConfig: 1
   m_MaxConnections: 4
   m_ConnectionConfig:
     m_PacketSize: 1440
@@ -2043,7 +2042,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -3664,7 +3663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c09a49d32b66974bbeb5041fa1b5931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NumberOfEnemies: 2
+  NumberOfEnemies: 0
   _enemyPrefab: {fileID: 1602900439750258, guid: a16fc92f3df96cd49959d7be625ba97c,
     type: 2}
 --- !u!114 &2138809938
