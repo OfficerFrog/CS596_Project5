@@ -135,7 +135,7 @@ public class PlayerController : BasicPlayerController
         if (!isLocalPlayer)
             return;
 
-        var pickupItem = collision.gameObject.GetComponent<IPickupItem>();
+        var pickupItem = collision.gameObject.GetComponent<PickupItemBase>();
         if (pickupItem != null)
         {
             switch (pickupItem.Type)
@@ -150,7 +150,7 @@ public class PlayerController : BasicPlayerController
                 default:
                     return;
             }
-
+            pickupItem.ItemPickedUp();
             // remove picked up item
             Destroy(collision.gameObject);
         }

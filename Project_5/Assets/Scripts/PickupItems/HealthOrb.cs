@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-
-public class HealthOrb : MonoBehaviour, IPickupItem
+﻿
+public class HealthOrb : PickupItemBase
 {
-    public PickupType Type
+    public override PickupType Type
     {
         get { return PickupType.Health; }
     }
@@ -10,14 +9,19 @@ public class HealthOrb : MonoBehaviour, IPickupItem
     /// <summary>
     /// how much health should be gained when picked up
     /// </summary>
-    public int Amount
+    public override int Amount
     {
         get { return 30; }
     }
 
-    public int Experience
+    public override int Experience
     {
         get { return 30; }
+    }
+
+    public override float RespawnTime
+    {
+        get { return 20f; }
     }
 }
 
