@@ -93,8 +93,8 @@ public abstract class BasicPlayerController : DismissibleObjectController
         // spawn the projectile on all of the connected Clients
         NetworkServer.Spawn(projectile);
 
-        // destroy it after some arbitrary amount of time; 2 seconds seems good enough
-        Destroy(projectile, 2.0f);
+        // destroy it after some arbitrary amount of time; 10 seconds seems good enough
+        Destroy(projectile, 10.0f);
     }
 
     /// <summary>
@@ -110,7 +110,10 @@ public abstract class BasicPlayerController : DismissibleObjectController
             EnemyKilled(destroyedObject);
     }
 
-    public abstract void EnemyKilled(DismissibleObjectController enemy);
+    /// <summary>
+    /// Do anything that needs to be done after killing an enemy
+    /// </summary>
+    public virtual void EnemyKilled(DismissibleObjectController enemy) { }
 
     /// <summary>
     /// respawn player (in set time and place)
@@ -129,6 +132,13 @@ public abstract class BasicPlayerController : DismissibleObjectController
         OnRespawned();
     }
 
+    /// <summary>
+    /// Get distinct spawn location, based on if Enemy or Player, etc
+    /// </summary>
     public abstract Transform GetSpawnLocation();
-    public abstract void OnRespawned();
+
+    /// <summary>
+    /// Do anything that needs to be done after respawning
+    /// </summary>
+    public virtual void OnRespawned() { }
 }

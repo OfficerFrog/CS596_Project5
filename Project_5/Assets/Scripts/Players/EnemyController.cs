@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Networking;
 
 public class EnemyController : BasicPlayerController
 {
@@ -16,11 +17,16 @@ public class EnemyController : BasicPlayerController
 
     private void Start()
     {
+        //if (!isLocalPlayer)
+        //    return;
         _navMesh = this.GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
+        //if (!isLocalPlayer)
+        //    return;
+
         // need to update here, since base class Update() isnt called
         EllapsedTimeBetweenUpdates += Time.deltaTime;
 
@@ -84,27 +90,15 @@ public class EnemyController : BasicPlayerController
     {
         if (player == null)
             _navMesh.isStopped = true;
-            //_navMesh.enabled = false;
         else
-        {
-            //_navMesh.enabled = true;
             _navMesh.SetDestination(player.transform.position);
-        }
     }
 
-    // get enemy spawn location
+    // TODO:  get enemy spawn location
     public override Transform GetSpawnLocation()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnRespawned()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void EnemyKilled(DismissibleObjectController enemy)
-    {
-        throw new System.NotImplementedException();
+        //TODO change this to only getting enemy specific spawn location
+        Transform spawn = NetworkManager.singleton.GetStartPosition();
+        return spawn;
     }
 }

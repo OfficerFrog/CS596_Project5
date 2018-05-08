@@ -2,11 +2,15 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : BasicPlayerController
 {
+    [HideInInspector]
     [SyncVar(hook = "OnNameChanged")]
     public string PlayerName;
+
+    [HideInInspector]
     [SyncVar(hook = "OnColorChanged")]
     public Color PlayerColor;
 
@@ -33,6 +37,10 @@ public class PlayerController : BasicPlayerController
 
     [SerializeField]
     private int _killsToWin = 3;
+
+    [SerializeField]
+    private Text _playerCanvasNameText;
+
 
     [HideInInspector]
     protected override float EllapsedTimeBetweenUpdates { get; set; }
@@ -70,9 +78,9 @@ public class PlayerController : BasicPlayerController
 
     private void EnablePlayer()
     {
-        OnToggleShared.Invoke(true);
-        OnToggleLocal.Invoke(this.isLocalPlayer);
-        OnToggleRemote.Invoke(!this.isLocalPlayer);
+        //OnToggleShared.Invoke(true);
+        //OnToggleLocal.Invoke(this.isLocalPlayer);
+        //OnToggleRemote.Invoke(!this.isLocalPlayer);
 
         if (isLocalPlayer)
             PlayerCanvas.canvasInstance.Initialize();
@@ -83,11 +91,11 @@ public class PlayerController : BasicPlayerController
     /// </summary>
     private void DisablePlayer()
     {
-        OnToggleShared.Invoke(false);
-        if (isLocalPlayer)
-            OnToggleLocal.Invoke(false);
-        else
-            OnToggleRemote.Invoke(false);
+        //OnToggleShared.Invoke(false);
+        //if (isLocalPlayer)
+        //    OnToggleLocal.Invoke(false);
+        //else
+        //    OnToggleRemote.Invoke(false);
     }
 
     private void UpdateMovement()
@@ -95,7 +103,8 @@ public class PlayerController : BasicPlayerController
         float horizontalMovement = Input.GetAxis("Horizontal") * Time.deltaTime;
         float verticalMovement = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
 
-
+        if (horizontalMovement == 0.0f && verticalMovement == 0.0f)
+            return;
         // if has both movements, means player is turning in circle
         if (horizontalMovement != 0.0f && verticalMovement != 0.0f)
         {
@@ -198,10 +207,8 @@ public class PlayerController : BasicPlayerController
     void OnNameChanged(string value)
     {
         PlayerName = value;
-        this.gameObject.name = value; // useful for debugging
-        // TODO: set name, this will cause problems with more than one player
-        var found = GameObject.Find("PlayerNameCanvas");
-        
+        if(!isLocalPlayer)
+            _playerCanvasNameText.text = value;
     }
 
     void OnColorChanged(Color value)
