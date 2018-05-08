@@ -284,6 +284,9 @@ public class PlayerController : BasicPlayerController
 
     public override void OnRespawned()
     {
+        _currentBulletAmmo = _bulletCapacity;
+        var myHealth = this.GetComponent<Health>();
+        myHealth.CurrentHealth = myHealth.MaxHealth;
         EnablePlayer();
     }
 }

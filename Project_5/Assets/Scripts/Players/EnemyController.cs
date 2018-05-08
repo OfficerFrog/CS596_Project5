@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Networking;
@@ -124,7 +122,7 @@ public class EnemyController : BasicPlayerController
                 bool foundPath = false;
                 while (!foundPath)
                 {
-                    Vector3 newDestination = FindRandomLocation(new Vector3(1.3f, 0, .1f), _randomLocationDistanceThreshold);
+                    Vector3 newDestination = FindRandomLocation(this.transform.position, _randomLocationDistanceThreshold);
                     foundPath = PossiblyMoveToMeshLocation(newDestination, NavMesh.AllAreas);
                 }
                 
@@ -159,12 +157,14 @@ public class EnemyController : BasicPlayerController
         }
         return false;
     }
-
-    public static Vector3 FindRandomLocation(Vector3 origin, float distance)
+    /// <summary>
+    /// find random location X distance from my current location
+    /// </summary>
+    public static Vector3 FindRandomLocation(Vector3 myLocation, float distance)
     {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * distance;
 
-        randomDirection += origin;
+        randomDirection += myLocation;
 
         return randomDirection;
     }
@@ -176,5 +176,16 @@ public class EnemyController : BasicPlayerController
         //TODO change this to only getting enemy specific spawn location
         Transform spawn = NetworkManager.singleton.GetStartPosition();
         return spawn;
+    }
+
+    public override void OnRespawned()
+    {
+        _isMovingRandomly = false;
+        _destination = this.transform.position;
+        _engagedPlayer = null;
+        EllapsedTimeBetweenMovementUpdates = 0;
+
+        var myHealth = this.GetComponent<Health>();
+        myHealth.CurrentHealth = myHealth.MaxHealth;
     }
 }

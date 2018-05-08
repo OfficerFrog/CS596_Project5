@@ -121,7 +121,7 @@ public abstract class BasicPlayerController : DismissibleObjectController
     public override void Respawn(float inTime)
     {
         // spawn player in different position
-        if (isLocalPlayer)
+        if (isLocalPlayer || playerControllerId == -1)
         {
             // get the spawn location of the player type
             Transform spawn = GetSpawnLocation();
@@ -140,5 +140,5 @@ public abstract class BasicPlayerController : DismissibleObjectController
     /// <summary>
     /// Do anything that needs to be done after respawning
     /// </summary>
-    public virtual void OnRespawned() { }
+    public abstract void OnRespawned();
 }
