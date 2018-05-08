@@ -18,6 +18,8 @@ public class PlayerCanvas : MonoBehaviour
     [SerializeField]
     private Text _ammoValue;
 
+    [SerializeField]
+    private UIFader _damageImage;
     //[SerializeField] UIFader damageImage;
     //[SerializeField] AudioSource deathAudio;
 
@@ -41,7 +43,7 @@ public class PlayerCanvas : MonoBehaviour
 
     public void FlashDamageEffect()
     {
-        //damageImage.Flash();
+        _damageImage.Flash();
     }
 
     public void PlayDeathAudio()

@@ -36,8 +36,10 @@ public class Health : NetworkBehaviour
         if (amount == 0)
             return;
 
+        RpcTakeDamage();
+
         // limit the number of times SyncVar is set to limit chatter
-        if(CurrentHealth - amount <= 0)
+        if (CurrentHealth - amount <= 0)
         {
             // object is dead
             CurrentHealth = 0;// remove dead object
@@ -52,6 +54,13 @@ public class Health : NetworkBehaviour
         }
         else
             CurrentHealth -= amount;
+    }
+
+    [ClientRpc]
+    void RpcTakeDamage()
+    {
+        if (isLocalPlayer)
+            PlayerCanvas.canvasInstance.FlashDamageEffect();
     }
 
     /// <summary>

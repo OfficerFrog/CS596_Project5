@@ -674,6 +674,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1001 &455437413
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4537548428929902, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537548428929902, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537548428929902, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537548428929902, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537548428929902, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537548428929902, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537548428929902, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537548428929902, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 114872451361651620, guid: 029db0538506b5a42aa6832453aa3b28,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114982862329084292, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: 029db0538506b5a42aa6832453aa3b28, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &473385803
 GameObject:
   m_ObjectHideFlags: 0
@@ -2000,6 +2048,7 @@ MonoBehaviour:
   m_SpawnPrefabs:
   - {fileID: 1602900439750258, guid: a16fc92f3df96cd49959d7be625ba97c, type: 2}
   - {fileID: 1166728584594810, guid: 1086bbc5df1a9b04fad13404421a17d9, type: 2}
+  - {fileID: 1602900439750258, guid: a16fc92f3df96cd49959d7be625ba97c, type: 2}
   m_CustomConfig: 1
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -3663,7 +3712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c09a49d32b66974bbeb5041fa1b5931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NumberOfEnemies: 0
+  NumberOfEnemies: 2
   _enemyPrefab: {fileID: 1602900439750258, guid: a16fc92f3df96cd49959d7be625ba97c,
     type: 2}
 --- !u!114 &2138809938
