@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Networking;
@@ -10,15 +12,23 @@ public class EnemyController : BasicPlayerController
     [SerializeField]
     private float _engagementRange = 5f;
 
+    protected override float EllapsedTimeBetweenUpdates { get; set; }
+
+    [Tooltip("Perimeter in which to find a random point")]
+    [SerializeField]
+    private float _randomLocationDistanceThreshold = 50;
+
     [HideInInspector]
     private NavMeshAgent _navMesh;
 
-    protected override float EllapsedTimeBetweenUpdates { get; set; }
+    [HideInInspector]
+    private bool _isMovingRandomly;
 
     /// <summary>
-    /// for debugging purposes only
+    /// point on navMesh that the enemy is currently moving towards
     /// </summary>
-    public Vector3 Destination;
+    [HideInInspector]
+    private Vector3 _destination;
 
     /// <summary>
     /// player that enemy is currently shooting/chasing
@@ -86,9 +96,9 @@ public class EnemyController : BasicPlayerController
         return closestPlayer == null ? null : closestPlayer.player.gameObject;
     }
 
-    private float GetDistanceToPlayer(GameObject player, Vector3 myPosition)
+    private float GetDistanceToPlayer(GameObject player, Vector3 position)
     {
-        Vector3 diff = player.transform.position - myPosition;
+        Vector3 diff = player.transform.position - position;
         // dont care about Y-axis
         float distance = Mathf.Sqrt(diff.x * diff.x + diff.z * diff.z);
         return distance;
@@ -105,23 +115,60 @@ public class EnemyController : BasicPlayerController
     public void MoveEnemy(GameObject player)
     {
         if (player == null)
-            PossiblyMoveToMeshLocation(this.transform.position);
+        {
+            // find new random point to move to, if not moving randomly or within range of random point
+            // distance must be same distance used for NavMesh.SampleDistance()
+            if (!_isMovingRandomly || (_isMovingRandomly && GetDistanceToPlayer(this.gameObject, _destination) < 5f))
+            {
+                // keep trying to find path on NavMesh
+                bool foundPath = false;
+                while (!foundPath)
+                {
+                    Vector3 newDestination = FindRandomLocation(new Vector3(1.3f, 0, .1f), _randomLocationDistanceThreshold);
+                    foundPath = PossiblyMoveToMeshLocation(newDestination, NavMesh.AllAreas);
+                }
+                
+                _isMovingRandomly = true;
+            }
+        }
         else
-            PossiblyMoveToMeshLocation(player.transform.position);
+        {
+            // for some reason our player's transform has a negaitve y-axis sometimes
+            var newDestination = new Vector3(player.transform.position.x, this.transform.position.y, player.transform.position.z);
+            PossiblyMoveToMeshLocation(newDestination, NavMesh.AllAreas);
+            _isMovingRandomly = false;
+        }
     }
 
+    private void ShowDebugPosition(Vector3 point)
+    {
+        Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
+    }
     /// <summary>
     /// get a location on the NavMesh, and move to it
     /// </summary>
-    private void PossiblyMoveToMeshLocation(Vector3 destination)
+    private bool PossiblyMoveToMeshLocation(Vector3 destination, int layermask)
     {
         NavMeshHit navMeshLocation;
-        if (NavMesh.SamplePosition(destination, out navMeshLocation, 5f, 1))
+        if (NavMesh.SamplePosition(destination, out navMeshLocation, 5f, layermask))
         {
-            Destination = navMeshLocation.position;
-            _navMesh.SetDestination(navMeshLocation.position);
+            _destination = navMeshLocation.position; // update for debugging
+            _navMesh.destination = navMeshLocation.position;
+            ShowDebugPosition(navMeshLocation.position);
+            return true;
         }
+        return false;
     }
+
+    public static Vector3 FindRandomLocation(Vector3 origin, float distance)
+    {
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * distance;
+
+        randomDirection += origin;
+
+        return randomDirection;
+    }
+
 
     // TODO:  get enemy spawn location
     public override Transform GetSpawnLocation()
