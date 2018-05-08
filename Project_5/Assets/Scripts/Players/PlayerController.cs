@@ -45,6 +45,12 @@ public class PlayerController : BasicPlayerController
     [HideInInspector]
     protected override float EllapsedTimeBetweenUpdates { get; set; }
 
+    /// <summary>
+    /// for debugging purposes
+    /// </summary>
+    public Vector3 Destination;
+
+
     public override ObjectWithExperience ExperienceData
     {
         get { return new ObjectWithExperience { Type = ObjectWithExperienceType.Player, Experience = 0 }; }
@@ -64,6 +70,8 @@ public class PlayerController : BasicPlayerController
     {
         if (!isLocalPlayer)
             return;
+
+        Destination = this.transform.position;
 
         // need to update here, since base class Update() isnt called
         EllapsedTimeBetweenUpdates += Time.deltaTime;
@@ -103,6 +111,7 @@ public class PlayerController : BasicPlayerController
         float horizontalMovement = Input.GetAxis("Horizontal") * Time.deltaTime;
         float verticalMovement = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
 
+        // hasn't moved, so return
         if (horizontalMovement == 0.0f && verticalMovement == 0.0f)
             return;
         // if has both movements, means player is turning in circle

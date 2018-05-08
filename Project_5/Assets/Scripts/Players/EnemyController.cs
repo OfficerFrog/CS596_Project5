@@ -15,31 +15,47 @@ public class EnemyController : BasicPlayerController
 
     protected override float EllapsedTimeBetweenUpdates { get; set; }
 
+    /// <summary>
+    /// for debugging purposes only
+    /// </summary>
+    public Vector3 Destination;
+
+    /// <summary>
+    /// player that enemy is currently shooting/chasing
+    /// </summary>
+    private GameObject _engagedPlayer;
+
+    protected float EllapsedTimeBetweenMovementUpdates { get; set; }
+
     private void Start()
     {
-        //if (!isLocalPlayer)
-        //    return;
         _navMesh = this.GetComponent<NavMeshAgent>();
+        _navMesh.updateRotation = true;
     }
 
     private void Update()
     {
-        //if (!isLocalPlayer)
-        //    return;
-
         // need to update here, since base class Update() isnt called
         EllapsedTimeBetweenUpdates += Time.deltaTime;
 
-        GameObject player = GetNearestPlayer();
-        if (player == null)
+        _engagedPlayer = GetNearestPlayer();
+        if (_engagedPlayer != null)
         {
-            // continue cruising along (OR go back to main spot)
-        }
-        else
-        {
-            FollowPlayer(player);
             if (CanFire())
                 CmdFire();
+        }
+    }
+
+    /// <summary>
+    /// reduce the frequency that the enemy is updated, as too often will lead to bad things
+    /// </summary>
+    void FixedUpdate()
+    {
+        EllapsedTimeBetweenMovementUpdates += Time.deltaTime;
+        if (EllapsedTimeBetweenMovementUpdates >= .25f)
+        {
+            EllapsedTimeBetweenMovementUpdates = 0;
+            MoveEnemy(_engagedPlayer);
         }
     }
 
@@ -48,6 +64,9 @@ public class EnemyController : BasicPlayerController
         get { return new ObjectWithExperience { Type = ObjectWithExperienceType.Player, Experience = 500 }; }
     }
 
+    /// <summary>
+    /// returns nearest player GameObject, or Null if none
+    /// </summary>
     public GameObject GetNearestPlayer()
     {
         List<GameObject> players = GameObject.FindObjectsOfType<PlayerController>()
@@ -64,10 +83,7 @@ public class EnemyController : BasicPlayerController
             // pick the first that is within distance & has health
             .FirstOrDefault(playerDist => playerDist.dist <= _engagementRange && DoesPlayerHaveHealth(playerDist.player));
             // if none within range, return null
-        if(closestPlayer == null)
-            return null;
-        return closestPlayer.player.gameObject;
-        //return closestPlayer == null ? null : closestPlayer.player.gameObject;
+        return closestPlayer == null ? null : closestPlayer.player.gameObject;
     }
 
     private float GetDistanceToPlayer(GameObject player, Vector3 myPosition)
@@ -86,12 +102,25 @@ public class EnemyController : BasicPlayerController
         return true;
     }
 
-    public void FollowPlayer(GameObject player)
+    public void MoveEnemy(GameObject player)
     {
         if (player == null)
-            _navMesh.isStopped = true;
+            PossiblyMoveToMeshLocation(this.transform.position);
         else
-            _navMesh.SetDestination(player.transform.position);
+            PossiblyMoveToMeshLocation(player.transform.position);
+    }
+
+    /// <summary>
+    /// get a location on the NavMesh, and move to it
+    /// </summary>
+    private void PossiblyMoveToMeshLocation(Vector3 destination)
+    {
+        NavMeshHit navMeshLocation;
+        if (NavMesh.SamplePosition(destination, out navMeshLocation, 5f, 1))
+        {
+            Destination = navMeshLocation.position;
+            _navMesh.SetDestination(navMeshLocation.position);
+        }
     }
 
     // TODO:  get enemy spawn location
