@@ -9,30 +9,6 @@ public abstract class Projectile : NetworkBehaviour
     [HideInInspector]
     public BasicPlayerController FiringPlayer { get; set; }
 
-    // [Command] code is called on the Client but ran on the Server
-    [Command]
-    public void CmdFire(Vector3 origin, Vector3 direction)
-    {
-        RaycastHit hit;
-
-        Ray ray = new Ray(origin, direction);
-        Debug.DrawRay(ray.origin, ray.direction * 3f, Color.red, 1f);
-
-        bool result = Physics.Raycast(ray, out hit, 50f);
-
-        if (result)
-        {
-            Health enemy = hit.transform.GetComponent<Health>();
-
-            if (enemy != null)
-            {
-                enemy.TakeDamage(FiringPlayer, Damage);
-            }
-        }
-
-
-    }
-
     /// <summary>
     /// the amount to take away from health when this projectile hits something
     /// </summary>

@@ -44,9 +44,7 @@ public class PlayerController : BasicPlayerController
 
     [HideInInspector]
     protected override float EllapsedTimeBetweenUpdates { get; set; }
-
-    Projectile projectile;
-
+ 
     /// <summary>
     /// for debugging purposes
     /// </summary>
@@ -142,7 +140,7 @@ public class PlayerController : BasicPlayerController
         // update bullets  (TODO: if have different types of ammo, need to move this)
         _currentBulletAmmo -= 1;
 
-        projectile.CmdFire(_projectileSpawn.position, _projectileSpawn.forward);
+        _projectile.CmdFire(_projectileSpawn.position, _projectileSpawn.forward);
     }
 
     /// <summary>

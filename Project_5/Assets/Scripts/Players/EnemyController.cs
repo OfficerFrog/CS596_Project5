@@ -22,8 +22,6 @@ public class EnemyController : BasicPlayerController
     [HideInInspector]
     private bool _isMovingRandomly;
        
-    Projectile projectile;
-
     /// <summary>
     /// point on navMesh that the enemy is currently moving towards
     /// </summary>
@@ -52,7 +50,7 @@ public class EnemyController : BasicPlayerController
         if (_engagedPlayer != null)
         {
             if (CanFire())
-                projectile.CmdFire(_projectileSpawn.position, _projectileSpawn.forward);
+                _projectile.CmdFire(_projectileSpawn.position, _projectileSpawn.forward);
         }
     }
 
