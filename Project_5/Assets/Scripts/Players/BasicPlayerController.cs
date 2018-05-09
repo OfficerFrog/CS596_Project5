@@ -33,44 +33,13 @@ public abstract class BasicPlayerController : DismissibleObjectController
     /// </summary>
     [SerializeField]
     public Transform _projectileSpawn;
-    
-    /// <summary>
-    /// reference to projectile class
-    /// </summary>
-    [SerializeField]
-    public Projectile _projectile;
 
     /// <summary>
     /// pseudo-unique id to differentiate players
     /// </summary>
     public string PlayerId { get; private set; }
 
-
-    // [Command] code is called on the Client but ran on the Server
-    [Command]
-    public void CmdFire(Vector3 origin, Vector3 direction)
-    {
-        RaycastHit hit;
-
-        Ray ray = new Ray(origin, direction);
-        Debug.DrawRay(ray.origin, ray.direction * 3f, Color.red, 1f);
-
-        bool result = Physics.Raycast(ray, out hit, 50f);
-
-        if (result)
-        {
-            Health enemy = hit.transform.GetComponent<Health>();
-
-            if (enemy != null)
-            {
-                enemy.TakeDamage(FiringPlayer, Damage);
-            }
-        }
-
-
-    }
-
-
+    
 
     // Really TODO: not getting initialized correctly
     // TODO: keep track of players killed (via PlayerId)
