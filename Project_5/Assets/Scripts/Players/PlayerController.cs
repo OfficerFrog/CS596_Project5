@@ -34,7 +34,7 @@ public class PlayerController : BasicPlayerController
     /// </summary>
     [SerializeField]
     private int _bulletCapacity;
-
+        
     [SerializeField]
     private int _killsToWin = 3;
 
@@ -44,6 +44,8 @@ public class PlayerController : BasicPlayerController
 
     [HideInInspector]
     protected override float EllapsedTimeBetweenUpdates { get; set; }
+
+    Projectile projectile;
 
     /// <summary>
     /// for debugging purposes
@@ -140,7 +142,7 @@ public class PlayerController : BasicPlayerController
         // update bullets  (TODO: if have different types of ammo, need to move this)
         _currentBulletAmmo -= 1;
 
-        CmdFire();
+        projectile.CmdFire(_projectileSpawn.position, _projectileSpawn.forward);
     }
 
     /// <summary>

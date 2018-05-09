@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public abstract class Projectile : MonoBehaviour
+public abstract class Projectile : NetworkBehaviour
 {
     /// <summary>
     /// playerId of player that fired projectile
@@ -8,16 +9,28 @@ public abstract class Projectile : MonoBehaviour
     [HideInInspector]
     public BasicPlayerController FiringPlayer { get; set; }
 
-    void OnCollisionEnter(Collision collision)
+    // [Command] code is called on the Client but ran on the Server
+    [Command]
+    public void CmdFire(Vector3 origin, Vector3 direction)
     {
-        // if object collided with has health, reduce it
-        GameObject collisionObject = collision.gameObject;
-        var health = collisionObject.GetComponent<Health>();
-        if (health != null)
-            health.TakeDamage(FiringPlayer, Damage);
+        RaycastHit hit;
 
-        // remove projectile from game when it collides with anything
-        Destroy(gameObject);
+        Ray ray = new Ray(origin, direction);
+        Debug.DrawRay(ray.origin, ray.direction * 3f, Color.red, 1f);
+
+        bool result = Physics.Raycast(ray, out hit, 50f);
+
+        if (result)
+        {
+            Health enemy = hit.transform.GetComponent<Health>();
+
+            if (enemy != null)
+            {
+                enemy.TakeDamage(FiringPlayer, Damage);
+            }
+        }
+
+
     }
 
     /// <summary>
