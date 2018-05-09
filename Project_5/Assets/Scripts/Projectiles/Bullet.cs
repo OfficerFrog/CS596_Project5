@@ -1,7 +1,7 @@
 ﻿
 public class Bullet : Projectile
 {
-    protected override int Damage
+    public override int Damage
     {
         get { return 10; }
     }

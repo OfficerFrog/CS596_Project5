@@ -32,7 +32,10 @@ public abstract class BasicPlayerController : DismissibleObjectController
     /// used to instantiate projectile's spawn point
     /// </summary>
     [SerializeField]
-    private Transform _projectileSpawn;
+    public Transform _projectileSpawn;
+
+    // reference to Projectile class
+    Projectile _projectile;
 
     /// <summary>
     /// pseudo-unique id to differentiate players
@@ -76,25 +79,25 @@ public abstract class BasicPlayerController : DismissibleObjectController
 
     // [Command] code is called on the Client but ran on the Server
     [Command]
-    protected void CmdFire()
+    protected void CmdFire(Vector3 origin, Vector3 direction)
     {
-        // create an instane of the projectile we want to fire
-        GameObject projectile = Instantiate(
-            _bulletPrefab,
-            _projectileSpawn.position,
-            _projectileSpawn.rotation);
+        RaycastHit hit;
 
-        // give the projectile some velocity
-        float initialVelocity = this.GetComponent<Rigidbody>().velocity.magnitude;
-        projectile.GetComponent<Bullet>().SetVelocity(initialVelocity, projectile.transform.forward);
-        // associate projectile with this player
-        projectile.GetComponent<Projectile>().FiringPlayer = this;
+        Ray ray = new Ray(origin, direction);
+        Debug.DrawRay(ray.origin, ray.direction * 3f, Color.red, 1f);
 
-        // spawn the projectile on all of the connected Clients
-        NetworkServer.Spawn(projectile);
+        bool result = Physics.Raycast(ray, out hit, 50f);
 
-        // destroy it after some arbitrary amount of time; 10 seconds seems good enough
-        Destroy(projectile, 10.0f);
+        // BUG: null reference to object, TakeDamage is never called
+        if (result)
+        {
+            Health enemy = hit.transform.GetComponent<Health>();
+
+            if (enemy != null)
+            {
+                enemy.TakeDamage(_projectile.FiringPlayer, _projectile.Damage);
+            }
+        }        
     }
 
     /// <summary>

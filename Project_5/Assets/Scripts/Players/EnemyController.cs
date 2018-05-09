@@ -50,7 +50,7 @@ public class EnemyController : BasicPlayerController
         if (_engagedPlayer != null)
         {
             if (CanFire())
-                CmdFire();
+                CmdFire(_projectileSpawn.position, _projectileSpawn.forward);
         }
     }
 
