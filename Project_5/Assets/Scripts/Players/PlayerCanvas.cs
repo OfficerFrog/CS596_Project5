@@ -75,7 +75,9 @@ public class PlayerCanvas : MonoBehaviour
     public void DisplayGameStatus(string text)
     {
         _gameStatus.text = text;
-        Invoke("ClearGameStatusDisplay", 2f);
+        // only need to clear if there is something to clear
+        if(!string.IsNullOrEmpty(text))
+            Invoke("ClearGameStatusDisplay", 2f);
     }
 
     public void ClearGameStatusDisplay()
