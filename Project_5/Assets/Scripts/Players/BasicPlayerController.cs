@@ -86,7 +86,7 @@ public abstract class BasicPlayerController : DismissibleObjectController
         Ray ray = new Ray(origin, direction);
         Debug.DrawRay(ray.origin, ray.direction * 3f, Color.red, 1f);
 
-        bool result = Physics.Raycast(ray, out hit, 50f);
+        bool result = Physics.Raycast(ray, out hit, 10f);
 
         // BUG: null reference to object, TakeDamage is never called
         if (result)
