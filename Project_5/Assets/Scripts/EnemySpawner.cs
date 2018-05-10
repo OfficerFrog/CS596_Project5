@@ -7,7 +7,9 @@ public class EnemySpawner : NetworkBehaviour
 
     [SerializeField]
     private GameObject _enemyPrefab;
-    
+
+    [SerializeField]
+    private Transform[] _spawnPoints;
 
     /// <summary>
     /// when server starts create and spawn enemies in random spots
@@ -16,17 +18,8 @@ public class EnemySpawner : NetworkBehaviour
     {
         for (int i = 0; i < NumberOfEnemies; i++)
         {
-            var spawnPosition = new Vector3(
-                Random.Range(0f, 8.0f),
-                1.0f,
-                Random.Range(0f, 8.0f));
-
-            var spawnRotation = Quaternion.Euler(
-                0.0f,
-                Random.Range(0, 180),
-                0.0f);
-
-            GameObject enemy = Instantiate(_enemyPrefab, spawnPosition, spawnRotation);
+            int randomIndex = Random.Range(0, _spawnPoints.Length);
+            GameObject enemy = Instantiate(_enemyPrefab, _spawnPoints[randomIndex].position, _spawnPoints[randomIndex].rotation);
             NetworkServer.Spawn(enemy);
         }
     }
