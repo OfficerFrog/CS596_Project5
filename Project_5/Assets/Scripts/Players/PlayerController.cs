@@ -288,5 +288,7 @@ public class PlayerController : BasicPlayerController
         var myHealth = this.GetComponent<Health>();
         myHealth.CurrentHealth = myHealth.MaxHealth;
         EnablePlayer();
+        PlayerCanvas.canvasInstance.SetAmmo(_currentBulletAmmo);
+        PlayerCanvas.canvasInstance.SetHealth(myHealth.CurrentHealth);
     }
 }

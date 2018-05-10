@@ -127,9 +127,8 @@ public abstract class BasicPlayerController : DismissibleObjectController
             Transform spawn = GetSpawnLocation();
             transform.position = spawn.position;
             transform.rotation = spawn.rotation;
-        }
-
-        OnRespawned();
+            OnRespawned();
+        }       
     }
 
     /// <summary>
