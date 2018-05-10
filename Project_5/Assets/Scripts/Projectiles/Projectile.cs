@@ -8,7 +8,18 @@ public abstract class Projectile : MonoBehaviour
     [HideInInspector]
     public BasicPlayerController FiringPlayer { get; set; }
 
-    
+    void OnCollisionEnter(Collision collision)
+    {
+        // if object collided with has health, reduce it
+        GameObject collisionObject = collision.gameObject;
+        var health = collisionObject.GetComponent<Health>();
+        if (health != null)
+            health.TakeDamage(FiringPlayer, Damage);
+
+        // remove projectile from game when it collides with anything
+        Destroy(gameObject);
+    }
+
     /// <summary>
     /// the amount to take away from health when this projectile hits something
     /// </summary>
