@@ -3856,8 +3856,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c09a49d32b66974bbeb5041fa1b5931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< Updated upstream
   NumberOfEnemies: 5
   _enemyPrefab: {fileID: 1602900439750258, guid: a16fc92f3df96cd49959d7be625ba97c,
+=======
+  NumberOfEnemies: 1
+  _enemyPrefab: {fileID: 1179641182468532, guid: 447dd91e09361a449bb0282aeea8a857,
+>>>>>>> Stashed changes
     type: 2}
   _spawnPoints:
   - {fileID: 661324745}
