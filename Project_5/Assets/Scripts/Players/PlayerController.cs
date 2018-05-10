@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -45,16 +46,17 @@ public class PlayerController : BasicPlayerController
     [HideInInspector]
     protected override float EllapsedTimeBetweenUpdates { get; set; }
 
-    /// <summary>
-    /// for debugging purposes
-    /// </summary>
-    public Vector3 Destination;
-
+    public override PlayerType Type
+    { 
+        get { return PlayerType.User; }
+    }
 
     public override ObjectWithExperience ExperienceData
     {
         get { return new ObjectWithExperience { Type = ObjectWithExperienceType.Player, Experience = 0 }; }
     }
+
+    
 
     void Start()
     {
@@ -70,8 +72,6 @@ public class PlayerController : BasicPlayerController
     {
         if (!isLocalPlayer)
             return;
-
-        Destination = this.transform.position;
 
         // need to update here, since base class Update() isnt called
         EllapsedTimeBetweenUpdates += Time.deltaTime;

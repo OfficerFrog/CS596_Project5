@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -34,6 +35,10 @@ public class Health : NetworkBehaviour
     public void TakeDamage(BasicPlayerController shootingPlayer,  int amount)
     {
         if (amount == 0)
+            return;
+
+        // AI shouldnt damage each other
+        if (this.playerControllerId == Constants.AIControllerId && shootingPlayer.Type == PlayerType.Program)
             return;
 
         RpcTakeDamage();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Networking;
@@ -32,6 +33,11 @@ public class EnemyController : BasicPlayerController
     /// player that enemy is currently shooting/chasing
     /// </summary>
     private GameObject _engagedPlayer;
+
+    public override PlayerType Type
+    {
+        get { return PlayerType.Program; }
+    }
 
     protected float EllapsedTimeBetweenMovementUpdates { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿
 using System;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -34,10 +35,7 @@ public abstract class BasicPlayerController : DismissibleObjectController
     [SerializeField]
     private Transform _projectileSpawn;
 
-    /// <summary>
-    /// pseudo-unique id to differentiate players
-    /// </summary>
-    public string PlayerId { get; private set; }
+    public abstract PlayerType Type { get; }
 
     
 
@@ -56,8 +54,6 @@ public abstract class BasicPlayerController : DismissibleObjectController
     {
         if (!isLocalPlayer)
             return;
-
-        PlayerId = new Guid().ToString();
 
         //ObjectsDestroyedCounts = Enum.GetValues(typeof(ObjectWithExperienceType))
         //    .OfType<ObjectWithExperienceType>()
@@ -121,7 +117,7 @@ public abstract class BasicPlayerController : DismissibleObjectController
     public override void Respawn(float inTime)
     {
         // spawn player in different position
-        if (isLocalPlayer || playerControllerId == -1)
+        if (isLocalPlayer || playerControllerId == Constants.AIControllerId)
         {
             // get the spawn location of the player type
             Transform spawn = GetSpawnLocation();
