@@ -33,4 +33,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-Project_5/.vs/Project_5/v15/sqlite3/storage.ide
+**/sqlite3/
+**_Data/
